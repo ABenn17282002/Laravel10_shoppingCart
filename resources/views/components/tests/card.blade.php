@@ -5,4 +5,6 @@
     <div>{{ $title }}</div>
     <div>画像</div>
     <div>{{ $content }}</div>
+    {{-- 変数に入れた文章を表示する --}}
+    <div>{{ $messages }}</div>
 </div>
