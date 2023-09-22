@@ -11,6 +11,9 @@
         <!-- Fonts -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
 
+        {{-- Laravel10.0 tailwidcss追加 --}}
+        @vite(['resources/css/app.css', 'resources/js/app.js']);
+
         <!-- Styles -->
         <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 
