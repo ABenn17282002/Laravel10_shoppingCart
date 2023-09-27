@@ -5,8 +5,6 @@ use Illuminate\Support\Facades\Route;
 
 // ComponentTESTpage表示のためのクラス追加
 use App\Http\Controllers\Component\ComponentTestController;
-// ServiceContainer表示用クラス追加
-use App\Http\Controllers\LifeCycleTestController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,12 +28,6 @@ Route::get('/dashboard', function () {
 // ComponentTespage表示
 Route::get('/component-test1',[ComponentTestController::class, 'showComponent1']);
 Route::get('/component-test2',[ComponentTestController::class, 'showComponent2']);
-
-// ServiceContainer表示
-Route::get('/servicecontainertest',[LifeCycleTestController::class, 'showServiceContainerTest']);
-
-// ServiceProvider表示
-Route::get('/serviceprovidertest',[LifeCycleTestController::class, 'showServiceProviderTest']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
