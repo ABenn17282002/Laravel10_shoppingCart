@@ -7,8 +7,20 @@ use Illuminate\Http\Request;
 
 class LifeCycleTestController extends Controller
 {
+       // ServiceProviderTest関数(パスワードの暗号/復号化)
+       public function showServiceProviderTest()
+       {
+           // 暗号化用サービスプロバイダーの生成
+           $encrypt = app()->make('encrypter');
+           // PWの暗号化
+           $password = $encrypt->encrypt('Atyab28251234577');
+           // 暗号化したPWの表示,PWの復号化
+           dd($password, $encrypt->decrypt($password));
+       }
+
     // Servicecontainerの利用を定義する関数
-    public function showServiceContainerTest(){
+    public function showServiceContainerTest()
+    {
 
         // ServiceContainerを追加
         app()->bind('LifeCycleTest', function(){
@@ -39,6 +51,7 @@ class LifeCycleTestController extends Controller
         // 生成したライフサイクルとServiceContainerを表示
         dd($test,app());
     }
+
 }
 
 /* Messageを取得するクラス(インスタンス実行型) */

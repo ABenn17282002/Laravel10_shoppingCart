@@ -34,6 +34,9 @@ Route::get('/component-test2',[ComponentTestController::class, 'showComponent2']
 // ServiceContainer表示
 Route::get('/servicecontainertest',[LifeCycleTestController::class, 'showServiceContainerTest']);
 
+// ServiceProvider表示
+Route::get('/serviceprovidertest',[LifeCycleTestController::class, 'showServiceProviderTest']);
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
