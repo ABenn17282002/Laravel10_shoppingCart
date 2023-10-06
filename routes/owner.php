@@ -6,6 +6,7 @@ use App\Http\Controllers\Owner\Auth\ConfirmablePasswordController;
 use App\Http\Controllers\Owner\Auth\EmailVerificationNotificationController;
 use App\Http\Controllers\Owner\Auth\EmailVerificationPromptController;
 use App\Http\Controllers\Owner\Auth\NewPasswordController;
+use App\Http\Controllers\Owner\Auth\PasswordController;
 use App\Http\Controllers\Owner\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Owner\Auth\RegisteredUserController;
 use App\Http\Controllers\Owner\Auth\VerifyEmailController;
