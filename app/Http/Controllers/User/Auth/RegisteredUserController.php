@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+// User\Auth
+namespace App\Http\Controllers\User\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\Models\User; // Userモデルの使用
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
@@ -20,7 +21,8 @@ class RegisteredUserController extends Controller
      */
     public function create(): View
     {
-        return view('auth.register');
+        // user用に編集
+        return view('user.auth.register');
     }
 
     /**
