@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 // ComponentTESTpage表示のためのクラス追加
@@ -20,12 +19,12 @@ use App\Http\Controllers\LifeCycleTestController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('user.welcome');
 });
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+    return view('user.dashboard');
+})->middleware(['auth:users', 'verified'])->name('dashboard');
 
 // ComponentTespage表示
 Route::get('/component-test1',[ComponentTestController::class, 'showComponent1']);
@@ -36,11 +35,5 @@ Route::get('/servicecontainertest',[LifeCycleTestController::class, 'showService
 
 // ServiceProvider表示
 Route::get('/serviceprovidertest',[LifeCycleTestController::class, 'showServiceProviderTest']);
-
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
 
 require __DIR__.'/auth.php';

@@ -11,7 +11,6 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules;
 use Illuminate\View\View;
 
 class RegisteredUserController extends Controller
@@ -33,22 +32,20 @@ class RegisteredUserController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
-            'name' => ['required', 'string', 'max:255'],
+            'name' => 'required|string|max:255',
             // admins_tableからの読み込み
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:admins'],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'email' => 'required|string|email|max:255|unique:admins',
+            'password' => 'required|string|confirmed|min:8',
         ]);
 
-        // Adminモデルの使用
-        $user = Admin::create([
+        // login中のadminユーザがのみが作成可能
+        Auth::guard('admin')->login($user = Admin::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-        ]);
+        ]));
 
         event(new Registered($user));
-
-        Auth::login($user);
 
         // admin用に編集
         return redirect(RouteServiceProvider::ADMIN_HOME);
