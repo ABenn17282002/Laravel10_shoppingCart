@@ -5,8 +5,8 @@
 
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
-
-    <form method="POST" action="{{ route('password.email') }}">
+    {{-- user用に編集 --}}
+    <form method="POST" action="{{ route('user.password.email') }}">
         @csrf
 
         <!-- Email Address -->
