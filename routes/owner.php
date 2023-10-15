@@ -10,6 +10,7 @@ use App\Http\Controllers\Owner\Auth\PasswordController;
 use App\Http\Controllers\Owner\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Owner\Auth\RegisteredUserController;
 use App\Http\Controllers\Owner\Auth\VerifyEmailController;
+use App\Http\Controllers\Owner\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -30,7 +31,7 @@ Route::get('/', function () {
 
 Route::get('/dashboard', function () {
     return view('owner.dashboard');
-})->middleware(['auth:owner', 'verified'])->name('dashboard');
+})->middleware(['auth:owners', 'verified'])->name('dashboard');
 
 // auth.phpの引用
 Route::middleware('guest')->group(function () {
@@ -58,7 +59,7 @@ Route::middleware('guest')->group(function () {
 });
 
 // auth.phpの引用+ownerモデル
-Route::middleware('auth:owner')->group(function () {
+Route::middleware('auth:owners')->group(function () {
     Route::get('verify-email', EmailVerificationPromptController::class)
                 ->name('verification.notice');
 
@@ -79,4 +80,10 @@ Route::middleware('auth:owner')->group(function () {
 
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
                 ->name('logout');
+});
+
+// ownerプロフィール編集用
+Route::middleware('auth:owners')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
 });

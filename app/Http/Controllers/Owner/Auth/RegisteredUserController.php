@@ -47,7 +47,8 @@ class RegisteredUserController extends Controller
 
         event(new Registered($user));
 
-        Auth::login($user);
+        // owner用に編集
+        Auth::guard('owners')->login($user);
 
         // owner用に編集
         return redirect(RouteServiceProvider::OWNER_HOME);

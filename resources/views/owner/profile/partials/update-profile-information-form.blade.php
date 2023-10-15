@@ -8,12 +8,12 @@
             {{ __("Update your account's profile information and email address.") }}
         </p>
     </header>
-
-    <form id="send-verification" method="post" action="{{ route('verification.send') }}">
+    {{-- owner用に編集 --}}
+    <form id="send-verification" method="post" action="{{ route('owner.verification.send') }}">
         @csrf
     </form>
-
-    <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6">
+    {{-- owner用に編集 --}}
+    <form method="post" action="{{ route('owner.profile.update') }}" class="mt-6 space-y-6">
         @csrf
         @method('patch')
 

@@ -19,6 +19,6 @@ class EmailVerificationPromptController extends Controller
         return $request->user()->hasVerifiedEmail()
                      // admin用に編集
                     ? redirect()->intended(RouteServiceProvider::ADMIN_HOME)
-                    : view('auth.verify-email');
+                    : view('adnmin.auth.verify-email');
     }
 }
