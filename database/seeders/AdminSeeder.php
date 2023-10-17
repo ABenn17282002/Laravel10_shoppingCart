@@ -15,10 +15,10 @@ class AdminSeeder extends Seeder
     public function run(): void
     {
         DB::table('admins')->insert([
-            'name'=>'test',
-            'email'=>'test@test.com',
-            'password'=>Hash::make('test98721'),
-            'created_at'=> '2021/11/10 11:20:30'
+            'name'=>'大島 建司',
+            'email'=>'iooshima@zlhakv.jhj',
+            'password'=>Hash::make('dteYNF25'),
+            'created_at'=> '2023/10/17 17:30:30'
         ]);
     }
 }

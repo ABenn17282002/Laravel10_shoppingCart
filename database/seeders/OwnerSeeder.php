@@ -16,20 +16,20 @@ class OwnerSeeder extends Seeder
     {
         DB::table('owners')->insert([
             [
-                'name'=>'test',
-                'email'=>'test@test.com',
-                'password'=>Hash::make('test98721'),
+                'name'=>'川嶋 静奈',
+                'email'=>'Shizuna_Kawashima@brohtyjhx.if',
+                'password'=>Hash::make('CRKW7dSX'),
                 'created_at'=> '2021/11/10 11:20:31'
             ],
             [
-                'name'=>'test2',
-                'email'=>'test2@test.com',
-                'password'=>Hash::make('test987212'),
+                'name'=>'新倉 浩一',
+                'email'=>'kouichi_niikura@hyhwq.dw',
+                'password'=>Hash::make('yw8HEKw2'),
                 'created_at'=> '2021/11/10 11:20:32'
             ],
             [
-                'name'=>'test3',
-                'email'=>'test3@test.com',
+                'name'=>'中林 二菜',
+                'email'=>'anakabayashi@tlzv.rz',
                 'password'=>Hash::make('test987213'),
                 'created_at'=> '2021/11/10 11:20:33'
             ],
