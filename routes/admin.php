@@ -13,6 +13,9 @@ use App\Http\Controllers\Admin\Auth\VerifyEmailController;
 use App\Http\Controllers\Admin\ProfileController;
 use Illuminate\Support\Facades\Route;
 
+// Ownerコントローラーの使用
+use App\Http\Controllers\Admin\OwnersController;
+
 /*
 |--------------------------------------------------------------------------
 | admin Routes
@@ -32,6 +35,10 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     return view('admin.dashboard');
 })->middleware(['auth:admin', 'verified'])->name('dashboard');
+
+// リソースコントローラ(Adminログイン時)
+Route::resource('owners', OwnersController::class)
+->middleware('auth:admin');
 
 // auth.phpの引用
 Route::middleware('guest')->group(function () {
