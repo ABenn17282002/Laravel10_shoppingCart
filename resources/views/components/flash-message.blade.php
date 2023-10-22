@@ -8,8 +8,12 @@
 {{-- Flassmessage --}}
 <script>
 $(function(){
+    // 登録処理完了
     @if(Session::has('success'))
         toastr.success("{{ Session::get('success') }}");
+    // 更新処理完了
+    @elseif (Session::has('update'))
+        toastr.info("{{ Session::get('update') }}");
     @endif
 });
 </script>
