@@ -9,6 +9,8 @@ use App\Models\Owner;  // Eloquent エロクアント
 use Illuminate\Support\Facades\DB; // QueryBuilder クエリービルダー
 /* 日付を扱うクラス */
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Hash;  // 暗号化クラス
+use Illuminate\Validation\Rules;      // validationクラス
 
 class OwnersController extends Controller
 {
@@ -46,7 +48,23 @@ class OwnersController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // validation
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:owners'],
+            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+        ]);
+
+        // Ownerのname,email,passowrdの保存
+        Owner::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+        ]);
+
+        // owners.indexページへリダイレクト flashmessage
+        return \redirect()->route('admin.owners.index')
+        ->with('success','オーナー登録が完了しました。');
     }
 
     /**
