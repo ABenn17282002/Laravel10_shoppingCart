@@ -85,13 +85,25 @@ class OwnersController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        // validation
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            // mailアドレス変更しない場合の許可
+            'email' => ['required', 'string', 'email', 'max:255',],
+            // Password変更しない場合の許可
+            'password' => ['nullable', 'confirmed', Rules\Password::defaults()],
+        ]);
+
         // idがなければ404画面
         $owner = Owner::findOrFail($id);
         // フォームから取得した値を代入
         $owner -> name = $request->name;
         $owner -> email = $request->email;
-        // passwordは暗号化
-        $owner -> password = Hash::make($request->password);
+
+        // password情報が空でないときのみ適応する！
+        if ($request->filled('password')) {
+            $owner  -> password = Hash::make($request->password);
+        }
         // 情報を保存
         $owner ->save();
 
@@ -106,6 +118,20 @@ class OwnersController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        // dd("削除処理");
+        //ソフトデリート
+        Owner::findOrFail($id)->delete();
+
+        return \redirect()
+        ->route('admin.owners.index')
+        ->with('trash','オーナー情報をゴミ箱へ移しました');
+    }
+
+    /* Ownerゴミ箱情報の取得 */
+    public function expiredOwnerIndex()
+    {
+        // softDeleteのみを取得
+        $expiredOwners = Owner::onlyTrashed()->get();
+        return view('admin.expired-owners',\compact('expiredOwners'));
     }
 }

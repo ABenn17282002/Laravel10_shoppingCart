@@ -7,10 +7,12 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 // 認証用モデルのインポート
 use Illuminate\Foundation\Auth\User as Authenticatable;
+// softDelete用クラス
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Owner extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable,SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
