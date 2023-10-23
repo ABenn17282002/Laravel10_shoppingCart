@@ -94,3 +94,9 @@ Route::middleware('auth:admin')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
 });
+
+// 期限切れOwner一覧表示及び物理削除用ルート
+Route::prefix('expired-owners')->
+    middleware('auth:admin')->group(function(){
+        Route::get('index', [OwnersController::class, 'expiredOwnerIndex'])->name('expired-owners.index');
+});

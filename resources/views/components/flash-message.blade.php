@@ -14,6 +14,14 @@ $(function(){
     // 更新処理完了
     @elseif (Session::has('update'))
         toastr.info("{{ Session::get('update') }}");
+    // ゴミ箱へ移動
+    @elseif (Session::has('trash'))
+        toastr.options =
+        {
+            "closeButton" : true,
+            "positionClass": "toast-top-center",
+        }
+        toastr.warning("{{ Session::get('trash') }}");
     @endif
 });
 </script>
