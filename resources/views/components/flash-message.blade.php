@@ -22,6 +22,14 @@ $(function(){
             "positionClass": "toast-top-center",
         }
         toastr.warning("{{ Session::get('trash') }}");
+    // ゴミ箱情報の完全削除
+    @elseif (Session::has('delete'))
+        toastr.options =
+        {
+            "closeButton" : true,
+            "positionClass": "toast-top-center",
+        }
+        toastr.warning("{{ Session::get('delete') }}");
     @endif
 });
 </script>

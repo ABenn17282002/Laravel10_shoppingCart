@@ -38,11 +38,11 @@
                                             {{-- 削除済みの日に変更 --}}
                                             <td class="px-4 py-3">{{ $owner->deleted_at->diffForHumans() }}</td>
                                             {{-- 削除用ボタン --}}
-                                            <form id="" method="post" action="">
+                                            <form id="delete_{{ $owner-> id }}" method="post" action="{{ route('admin.expired-owners.destroy', ['owner' => $owner->id ])}}">
                                                 @csrf
                                                 <td class="px-4 py-3">
                                                     {{-- data-id=>owner_id取得 ==>onclickで削除実行 --}}
-                                                    <a href="#" data-id="" onclick="deletePost(this)" class="text-white bg-red-400 border-0 py-2 px-4 focus:outline-none hover:bg-red-500 rounded ">削除</a>
+                                                    <a href="#" data-id="{{ $owner->id }}" onclick="deletePost(this)" class="text-white bg-red-400 border-0 py-2 px-4 focus:outline-none hover:bg-red-500 rounded ">削除</a>
                                                 </td>
                                             </form>
                                         </tr>

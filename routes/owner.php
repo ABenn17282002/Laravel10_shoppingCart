@@ -10,7 +10,7 @@ use App\Http\Controllers\Owner\Auth\PasswordController;
 use App\Http\Controllers\Owner\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Owner\Auth\RegisteredUserController;
 use App\Http\Controllers\Owner\Auth\VerifyEmailController;
-use App\Http\Controllers\Owner\ProfileController;
+use App\Http\Controllers\Owner\Auth\OwnerProfileController; // ←ルート情報変更
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -84,6 +84,6 @@ Route::middleware('auth:owners')->group(function () {
 
 // ownerプロフィール編集用
 Route::middleware('auth:owners')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::get('/profile', [OwnerProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [OwnerProfileController::class, 'update'])->name('profile.update');
 });
