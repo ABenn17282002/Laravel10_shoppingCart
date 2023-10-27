@@ -134,4 +134,14 @@ class OwnersController extends Controller
         $expiredOwners = Owner::onlyTrashed()->get();
         return view('admin.expired-owners',\compact('expiredOwners'));
     }
+
+    /* 期限切れOwner情報の完全削除 */
+    public function expiredOwnerDestroy($id)
+    {
+        // 論理削除したuserを物理削除をする
+        Owner::onlyTrashed()->findOrFail($id)->forceDelete();
+
+        return redirect()->route('admin.expired-owners.index')
+        ->with('delete','オーナー情報を完全に削除しました');;
+    }
 }

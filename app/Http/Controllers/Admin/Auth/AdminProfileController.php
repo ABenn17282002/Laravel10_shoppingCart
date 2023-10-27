@@ -1,7 +1,6 @@
 <?php
 
-// admin
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Admin\Auth;
 
 use App\Http\Controllers\Controller; // Controllerの使用
 use App\Http\Requests\AdminProfileUpdateRequest;
@@ -10,10 +9,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 
-class ProfileController extends Controller
+class AdminProfileController extends Controller
 {
     /**
-     * Display the user's profile form.
+     * Display the admin's profile form.
      */
     public function edit(Request $request): View
     {
