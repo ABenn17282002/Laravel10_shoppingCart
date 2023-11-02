@@ -33,6 +33,24 @@ class OwnerSeeder extends Seeder
                 'password'=>Hash::make('test987213'),
                 'created_at'=> '2021/11/10 11:20:33'
             ],
+            [
+                'name'=>'的場政利',
+                'email'=>'masatoshi_matoba@dqbyq.yqkhq.wpx',
+                'password'=>Hash::make('FiYrUN1C'),
+                'created_at'=> '2023/11/02 11:21:33'
+            ],
+            [
+                'name'=>'小寺清佳',
+                'email'=>'Sayaka_Odera@uubajoa.sn',
+                'password'=>Hash::make('W6JMmOuC'),
+                'created_at'=> '2023/10/10 11:25:33'
+            ],
+            [
+                'name'=>'青山理子',
+                'email'=>'riko9394@vucmvf.gy.wx',
+                'password'=>Hash::make('YHse0pYG'),
+                'created_at'=> '2023/10/20 11:25:33'
+            ],
         ]);
     }
 }
