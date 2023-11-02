@@ -27,18 +27,18 @@ use App\Http\Controllers\Admin\OwnersController;
 |
 */
 
-// web.phpからの引用+Adminモデル
-Route::get('/', function () {
-    return view('admin.welcome');
-});
+// 管理者:welcome画面非表示
+// Route::get('/', function () {
+//     return view('admin.welcome');
+// });
 
 Route::get('/dashboard', function () {
     return view('admin.dashboard');
 })->middleware(['auth:admin', 'verified'])->name('dashboard');
 
-// リソースコントローラ(Adminログイン時)
+// リソースコントローラ(show画面を除外したルーティング)
 Route::resource('owners', OwnersController::class)
-->middleware('auth:admin');
+->middleware('auth:admin')->except(['show']);
 
 // auth.phpの引用
 Route::middleware('guest')->group(function () {
