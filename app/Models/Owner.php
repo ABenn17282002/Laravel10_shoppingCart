@@ -44,4 +44,14 @@ class Owner extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+
+    /**
+     * shop function
+     * Ownerに関連している店舗情報の取得
+     */
+    public function shop()
+    {
+        return $this->hasOne(Shop::class);
+    }
 }
