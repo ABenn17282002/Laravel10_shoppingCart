@@ -4,13 +4,24 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-/* DB操作用モジュール */
-use App\Models\Owner;  // Eloquent エロクアント
-use Illuminate\Support\Facades\DB; // QueryBuilder クエリービルダー
-/* 日付を扱うクラス */
+// Ownerモデルクラス
+use App\Models\Owner;
+// Adminモデルクラス
+use APP\Models\Admin;
+// Shopモデルクラス
+use App\Models\Shop;
+// QueryBuilder クエリービルダー
+use Illuminate\Support\Facades\DB;
+// 日付を扱うクラス
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Hash;  // 暗号化クラス
-use Illuminate\Validation\Rules;      // validationクラス
+// 暗号化クラス
+use Illuminate\Support\Facades\Hash;
+// validationクラス
+use Illuminate\Validation\Rules;
+// 例外catch用
+use Throwable;
+// エラーLog記録用
+use Illuminate\Support\Facades\Log;
 
 class OwnersController extends Controller
 {
@@ -55,14 +66,44 @@ class OwnersController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:owners'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            // 店舗名作成のvalidation
+            'shop_name' => ['required', 'string', 'max:255'],
         ]);
 
-        // Ownerのname,email,passowrdの保存
-        Owner::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+        // try catch構文
+        try{
+            /**
+             * オーナー作成時にshopも同時に作成
+             * transaction2回失敗時=> error(引数:$request)
+             * */
+            DB::transaction(function() use($request){
+
+                // Owner情報の作成
+                $owner = Owner::create([
+                    'name' => $request->name,
+                    'email' => $request->email,
+                    'password' => Hash::make($request->password),
+                ]);
+
+                // Shop情報の作成
+                Shop::create([
+                    // owner_tableよりowner_idを取得
+                    'owner_id'=> $owner->id,
+                    'name'=>$request->shop_name,
+                    'information'=>'',
+                    'filename'=>'',
+                    'is_selling'=>true
+                ]);
+
+            },2);
+
+        } catch (Throwable $e){
+
+           // 例外処理の記録と画面表示
+            Log::error($e);
+            throw $e;
+
+        }
 
         // owners.indexページへリダイレクト flashmessage
         return \redirect()->route('admin.owners.index')
@@ -76,7 +117,6 @@ class OwnersController extends Controller
     {
         // idがなければ404画面
         $owner = Owner::findOrFail($id);
-        // dd($owner);
 
         // admin/owners/edit.blade.phpにowner変数(owner_id)を渡す。
         return \view('admin.owners.edit',\compact('owner'));
@@ -94,6 +134,8 @@ class OwnersController extends Controller
             'email' => ['required', 'string', 'email', 'max:255',],
             // Password変更しない場合の許可
             'password' => ['nullable', 'confirmed', Rules\Password::defaults()],
+            // 店舗名作成のvalidation
+            'shop_name' => ['required', 'string', 'max:255'],
         ]);
 
         // idがなければ404画面
@@ -106,6 +148,12 @@ class OwnersController extends Controller
         if ($request->filled('password')) {
             $owner  -> password = Hash::make($request->password);
         }
+
+        // ショップ情報を更新(Shop名の変更)
+        $owner->shop->update([
+            'name' => $request->shop_name,
+        ]);
+
         // 情報を保存
         $owner ->save();
 
@@ -120,7 +168,6 @@ class OwnersController extends Controller
      */
     public function destroy(string $id)
     {
-        // dd("削除処理");
         //ソフトデリート
         Owner::findOrFail($id)->delete();
 
