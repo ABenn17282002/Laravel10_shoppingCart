@@ -9,6 +9,8 @@ use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 // softDelete用クラス
 use Illuminate\Database\Eloquent\SoftDeletes;
+// shopモデルの追加
+use App\Models\Shop;
 
 class Owner extends Authenticatable
 {

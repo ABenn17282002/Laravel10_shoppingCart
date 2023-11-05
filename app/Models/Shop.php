@@ -4,7 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Owner;   // Ownerモデルの使用
+// Ownerモデルの使用
+use App\Models\Owner;
 
 class Shop extends Model
 {
@@ -18,4 +19,15 @@ class Shop extends Model
     {
         return $this->belongsTo(Owner::class);
     }
+
+    /**
+    * shop_tableの定義
+    */
+    protected $fillable =[
+        'owner_id',
+        'name',
+        'information',
+        'filename',
+        'is_selling'
+    ];
 }
