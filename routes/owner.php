@@ -11,6 +11,8 @@ use App\Http\Controllers\Owner\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Owner\Auth\RegisteredUserController;
 use App\Http\Controllers\Owner\Auth\VerifyEmailController;
 use App\Http\Controllers\Owner\Auth\OwnerProfileController; // ←ルート情報変更
+// ShopControllerインポート
+use App\Http\Controllers\Owner\ShopController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -86,4 +88,12 @@ Route::middleware('auth:owners')->group(function () {
 Route::middleware('auth:owners')->group(function () {
     Route::get('/profile', [OwnerProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [OwnerProfileController::class, 'update'])->name('profile.update');
+});
+
+// 店舗情報、編集・更新画面
+Route::prefix('shops')->
+    middleware('auth:owners')->group(function(){
+        Route::get('index', [ShopController::class, 'index'])->name('shops.index');
+        Route::get('edit/{shop}', [ShopController::class, 'edit'])->name('shops.edit');
+        Route::post('update/{shop}', [ShopController::class, 'update'])->name('shops.update');
 });
