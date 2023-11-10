@@ -16,6 +16,28 @@ class ShopController extends Controller
     public function __construct()
     {
         $this->middleware('auth:owners');
+
+        // コントローラミドルウェア
+        $this->middleware(function ($request, $next) {
+
+            // shop_idの取得
+            $id = $request->route()->parameter('shop');
+
+            // null判定
+            if(!is_null($id)){
+                // shopに紐づくOwnerIdの取得
+                $shopsOwnerId= shop::findOrFail($id)->owner->id;
+                // 文字列→数値に変換
+                $shopId = (int)$shopsOwnerId;
+                // 認証済のidを取得
+                $ownerId = Auth::id();
+                // shopIDとownerIDが不一致の場合
+                if($shopId !== $ownerId){
+                    abort(404); // 404画面表示
+                }
+        }
+            return $next($request);
+        });
     }
 
     /**
@@ -42,7 +64,8 @@ class ShopController extends Controller
      */
     public function edit($id)
     {
-
+        // idがあればそのページ,なければ404
+        dd(Shop::findOrFail($id));
     }
 
     /**
