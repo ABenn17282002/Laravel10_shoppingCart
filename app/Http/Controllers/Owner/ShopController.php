@@ -47,8 +47,6 @@ class ShopController extends Controller
      */
     public function index()
     {
-        // Login済Owner_idの取得
-        $ownerId = Auth::id();
         // ownerid = 認証ユーザが一致したユーザを出力する
         $shops = Shop::where('owner_id', Auth::id())->get();
 
