@@ -15,7 +15,11 @@ return new class extends Migration
             // id
             $table->id();
             // 外部キー制約(owner_idに紐づくもの)
-            $table->foreignId('owner_id')->constrained();
+            $table->foreignId('owner_id')
+            ->constrained()
+            // Owner_Table削除時自動削除、更新時自動更新
+            ->cascadeOnDelete()
+            ->cascadeOnUpdate();
             // 名前
             $table->string('name');
             // 情報
