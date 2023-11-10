@@ -5,9 +5,11 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('owner.dashboard') }}">
-                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
-                    </a>
+                    <div class="w-12">
+                        <a href="{{ route('owner.dashboard') }}">
+                            <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
+                        </a>
+                    </div>
                 </div>
 
                 <!-- Navigation Links -->
@@ -15,6 +17,10 @@
                     {{-- owner用に編集 --}}
                     <x-nav-link :href="route('owner.dashboard')" :active="request()->routeIs('owner.dashboard')">
                         {{ __('Dashboard') }}
+                    </x-nav-link>
+                    {{-- 店舗情報 --}}
+                    <x-nav-link :href="route('owner.shops.index')" :active="request()->routeIs('owner.shops.index')">
+                        店舗情報
                     </x-nav-link>
                 </div>
             </div>
@@ -72,6 +78,10 @@
             {{-- owner用に編集 --}}
             <x-responsive-nav-link :href="route('owner.dashboard')" :active="request()->routeIs('owner.dashboard')">
                 {{ __('Dashboard') }}
+            </x-responsive-nav-link>
+            {{-- 店舗情報 --}}
+            <x-responsive-nav-link :href="route('owner.shops.index')" :active="request()->routeIs('owner.shops.index')">
+                店舗情報
             </x-responsive-nav-link>
         </div>
 
