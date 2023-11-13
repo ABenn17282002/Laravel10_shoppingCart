@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use App\Models\Shop;
 // Auth認証用モデル
 use Illuminate\Support\Facades\Auth;
+// storage用モデル
+use Illuminate\Support\Facades\Storage;
 
 class ShopController extends Controller
 {
@@ -63,7 +65,10 @@ class ShopController extends Controller
     public function edit($id)
     {
         // idがあればそのページ,なければ404
-        dd(Shop::findOrFail($id));
+        $shop = Shop::findOrFail($id);
+
+        // owner/shops/edit.blade.phpにshop変数付でページを返す
+        return \view('owner.shops.edit',\compact('shop'));
     }
 
     /**
@@ -75,6 +80,16 @@ class ShopController extends Controller
      */
     public function update(Request $request, $id)
     {
+        // 一時フォルダ上で画像を保存
+        $imageFile = $request->image;
 
+        // 画像がnullでなく、upload出来ている場合
+        if(!is_null($imageFile)&& $imageFile->isValid()){
+            // publicフォルダ配下にshopsフォルダを作り、画像を保存
+            Storage::putFile('public\shops',$imageFile);
+        }
+
+        // 画像保存後shops.indexにリダイレクト
+        return redirect()->route('owner.shops.index');
     }
 }
