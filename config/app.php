@@ -171,7 +171,9 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         // 作成したServiceProviderを追加
-        App\Providers\SampleServiceProvider::class
+        App\Providers\SampleServiceProvider::class,
+        // image_resize用
+        Intervention\Image\ImageServiceProvider::class,
     ])->toArray(),
 
     /*
@@ -187,6 +189,8 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // 'Example' => App\Facades\Example::class,
+        // InterventionImage
+        'InterventionImage' => Intervention\Image\Facades\Image::class
     ])->toArray(),
 
 ];
