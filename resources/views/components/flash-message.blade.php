@@ -31,5 +31,15 @@ $(function(){
         }
         toastr.warning("{{ Session::get('delete') }}");
     @endif
+
+    // 店舗情報用message
+    @if (Session::has('info'))
+        toastr.options =
+        {
+            "closeButton" : true,
+            "positionClass": "toast-top-center",
+        }
+        toastr.info("{{ Session::get('info') }}");
+    @endif
 });
 </script>
