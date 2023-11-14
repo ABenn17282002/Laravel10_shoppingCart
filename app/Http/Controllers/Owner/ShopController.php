@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 //  画像リサイズ用モデル
 use InterventionImage;
+// UploadImageRequestクラス
+use App\Http\Requests\UploadImageRequest;
 
 class ShopController extends Controller
 {
@@ -76,11 +78,11 @@ class ShopController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\UploadImageRequest  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UploadImageRequest  $request, $id)
     {
         // 一時フォルダ上で画像を保存
         $imageFile = $request->image;
