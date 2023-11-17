@@ -32,8 +32,8 @@
                                 {{-- 画像の取得 --}}
                                 <div>
                                     {{-- コンポーネントより画像の取得
-                                    :filename="$shop->filename"=>UpLoad画像取得  --}}
-                                    <x-shop-thumbnail :filename="$shop->filename" />
+                                    :filename="$shop->filename"=>UpLoad画像取得 type="店舗" --}}
+                                    <x-thumbnail :filename="$shop->filename" type="shops"/>
                                 </div>
                             </div>
                         </a>

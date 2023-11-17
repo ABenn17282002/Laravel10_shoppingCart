@@ -4,27 +4,23 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-// Ownerモデルの使用
+// Ownerモデルの追加
 use App\Models\Owner;
 
-class Shop extends Model
+class Image extends Model
 {
     use HasFactory;
 
     /**
-    * shop_tableの定義
+    * Image_tableの定義
     */
     protected $fillable =[
         'owner_id',
-        'name',
-        'information',
         'filename',
-        'is_selling'
     ];
 
     /**
-    * owner function
-    * 店舗に関連しているOwner情報の取得
+    * UPLOADした画像に紐づくOwner情報を全て取得
     */
     public function owner()
     {
