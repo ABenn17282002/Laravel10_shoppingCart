@@ -7,10 +7,12 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 // 認証用モデルのインポート
 use Illuminate\Foundation\Auth\User as Authenticatable;
-// softDelete用クラス
+// SoftDelete用クラス
 use Illuminate\Database\Eloquent\SoftDeletes;
-// shopモデルの追加
+// Shopモデルの追加
 use App\Models\Shop;
+// Imageモデルの追加
+use App\Models\Image;
 
 class Owner extends Authenticatable
 {
@@ -47,13 +49,22 @@ class Owner extends Authenticatable
         'password' => 'hashed',
     ];
 
-
     /**
      * shop function
      * Ownerに関連している店舗情報の取得
+     * １対１モデル
      */
     public function shop()
     {
         return $this->hasOne(Shop::class);
+    }
+
+    /**
+    * Ownerに関連しているimage情報を取得
+    * 1 対 多モデル
+    */
+    public function image()
+    {
+        return $this->hasMany(Image::class);
     }
 }
