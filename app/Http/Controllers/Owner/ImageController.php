@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Owner;
 
 use App\Http\Controllers\Controller;
+// Requestクラス
+use Illuminate\Http\Request;
 // UploadImageRequestクラス
 use App\Http\Requests\UploadImageRequest;
 // ImageServiceの使用
@@ -11,6 +13,8 @@ use App\Services\ImageService;
 use App\Models\Image;
 // ユーザ認証
 use Illuminate\Support\Facades\Auth;
+// storageクラス
+use Illuminate\Support\Facades\Storage;
 
 class ImageController extends Controller
 {
@@ -108,7 +112,36 @@ class ImageController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        // バリデーションルール
+        $request->validate([
+            'title' => 'required|max:255',
+            'image' => 'nullable|image|max:5000', // 5MBまでの画像を許容
+        ]);
+
+        // 対象のImageモデルを取得
+        $imageModel = Image::findOrFail($id);
+
+        // タイトルを更新
+        $imageModel->title = $request->input('title');
+
+        // 画像がアップロードされている場合の処理
+        if ($request->hasFile('image')) {
+            // 古い画像を削除
+            Storage::delete('public/products/' . $imageModel->filename);
+
+            // ImageServiceを使用して新しい画像をアップロードし、ファイル名を取得
+            $fileNameToStore = ImageService::upload($request->file('image'), 'products');
+
+            // 新しいファイル名をモデルに設定
+            $imageModel->filename = $fileNameToStore;
+        }
+
+        // データベースに保存
+        $imageModel->save();
+
+        // 成功メッセージとともにリダイレクト
+        return redirect()->route('owner.images.index')
+        ->with('success', '画像情報が更新されました。');
     }
 
     /**

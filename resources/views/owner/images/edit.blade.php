@@ -25,11 +25,19 @@
                                         <input type="text" id="title" name="title" value="{{ $image->title }}"class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
                                     </div>
                                 </div>
-                                {{-- 画像のサムネイル --}}
+                                {{-- 古い画像のサムネイル --}}
                                 <div class="p-2 w-1/2 mx-auto">
                                     <div class="relative">
-                                        <label for="title" class="leading-7 text-sm text-gray-600">サムネイル画像</label>
+                                        <label for="title" class="leading-7 text-sm text-gray-600">現在のサムネイル画像</label>
                                         <x-thumbnail :filename="$image->filename" type="products" />
+                                    </div>
+                                </div>
+                                {{-- 新しい画像ファイルのアップロード --}}
+                                <div class="p-2 w-1/2 mx-auto">
+                                    <div class="relative">
+                                        <label for="image" class="leading-7 text-sm text-gray-600">新しい画像ファイル</label>
+                                        <input type="file" id="image" name="image" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" onchange="previewImage()">
+                                        <img id="newImagePreview" src="#" alt="新しい画像プレビュー" class="hidden w-full mt-2">
                                     </div>
                                 </div>
                                 <div class="p-2 w-full flex justify-around mt-4">
@@ -45,4 +53,16 @@
             </div>
         </div>
     </div>
+    <script>
+        function previewImage() {
+            var oFReader = new FileReader();
+            // ImageのURLを取得
+            oFReader.readAsDataURL(document.getElementById("image").files[0]);
+            // 画像のソースを取得し表示する
+            oFReader.onload = function (oFREvent) {
+                document.getElementById("newImagePreview").src = oFREvent.target.result;
+                document.getElementById("newImagePreview").style.display = 'block';
+            };
+        };
+    </script>
 </x-app-layout>
