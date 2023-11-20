@@ -91,16 +91,6 @@ class ImageController extends Controller
         ->route('owner.images.index')
         ->with('info','画像登録を実施しました。');
 
-        // セッションから特定のフラッシュメッセージを削除
-        $request->session()->forget('info');
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
     }
 
     /**
@@ -108,7 +98,9 @@ class ImageController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        // Image_idの取得(ない場合:404)
+        $image = Image::findOrFail($id);
+        return \view('owner.images.edit',\compact('image'));
     }
 
     /**
