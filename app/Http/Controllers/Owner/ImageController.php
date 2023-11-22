@@ -93,7 +93,7 @@ class ImageController extends Controller
         // redirect owner/images/index.blade.php + flashmessage
         return redirect()
         ->route('owner.images.index')
-        ->with('info','画像登録を実施しました。');
+        ->with('info','画像を登録しました。');
 
     }
 
@@ -115,7 +115,7 @@ class ImageController extends Controller
         // バリデーションルール
         $request->validate([
             'title' => 'required|max:255',
-            'image' => 'nullable|image|max:5000', // 5MBまでの画像を許容
+            'image' => 'nullable|image|max:2048', // 2MBまでの画像を許容
         ]);
 
         // 対象のImageモデルを取得
@@ -149,6 +149,22 @@ class ImageController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        // imageIDを取得
+        $image = Image::findOrFail($id);
+        // file情報取得
+        $filePath = 'public/products'. $image->filename;
+
+        // fileがあれば画像削除
+        if(Storage::exists($filePath)){
+            Storage::delete($filePath);
+        }
+
+        // DB情報削除
+        Image::findOrFail($id)->delete();
+
+        // redirect owner/images/index.blade.php + flashmessage
+        return redirect()
+        ->route('owner.images.index')
+        ->with('delete','画像を完全に削除しました');
     }
 }
