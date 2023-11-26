@@ -19,8 +19,9 @@
                     {{-- 画像をflexで横並びにする --}}
                     <div class="flex flex-wrap">
                         {{-- foreach構文でproducts_tableからデータを取得 --}}
-                        @foreach ($products as $product)
-                        {{-- width:1/2→1/4に変更, padding-2, md:p-4に変更 --}}
+                        @foreach ($ownerInfo as $owner)
+                            @foreach ($owner->shop->product as $product)
+                            {{-- width:1/2→1/4に変更, padding-2, md:p-4に変更 --}}
                             <div class="w-1/4 p-2 md:p-4">
                                 {{-- product_id取得→編集ページ --}}
                                 <a href="{{ route('owner.products.edit', ['product' => $product->id ])}}">
@@ -32,10 +33,11 @@
                                         </div>
                                 </a>
                             </div>
+                            @endforeach
                         @endforeach
                         </div>
-                    {{-- ページネーション
-                    {{ $images->links() }} --}}
+                    {{-- ページネーション --}}
+                    {{ $ownerInfo ->links() }}
                 </div>
             </div>
         </div>
