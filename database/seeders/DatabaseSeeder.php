@@ -11,8 +11,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Admin,OwnerSeederクラスの読込み
         $this->call([
+            // Admin,OwnerSeederクラスの読込み
             AdminSeeder::class,
             OwnerSeeder::class,
             // shopクラスの追加
@@ -20,7 +20,9 @@ class DatabaseSeeder extends Seeder
             // Imageクラスの追加
             ImageSeeder::class,
             // CategorySeederクラスの追加
-            CategorySeeder::class
+            CategorySeeder::class,
+            // Productクラスの追加
+            ProductSeeder::class,
         ]);
     }
 }
