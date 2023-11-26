@@ -43,11 +43,23 @@ class ProductController extends Controller
      */
     public function index()
     {
-        // EagerLoadingなし[shopに紐づく製品の認証済IDの取得]
-        $products = Owner::findOrFail(Auth::id())->shop->product;
+        /*N + 1問題の対策:リレーション先のリレーション情報を取得
+        → withメソッド、リレーションをドットでつなぐ*/
+        $ownerInfo = Owner::with('shop.product.imageFirst')
+        ->where('id', Auth::id())->paginate(10);
+
+
+        // dd($ownerInfo);
+
+        // foreach($ownerInfo as $owner){
+        //    dd($owner->shop->product);
+        //     foreach($owner->shop->product as $product){
+        //         dd($product->imageFirst->filename);
+        //     }
+        // }
 
         // redirect owner/products/index.blade.php
-        return view('owner.products.index',compact('products'));
+        return view('owner.products.index',compact('ownerInfo'));
 
     }
 
