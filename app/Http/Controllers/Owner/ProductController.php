@@ -43,23 +43,22 @@ class ProductController extends Controller
      */
     public function index()
     {
-        /*N + 1問題の対策:リレーション先のリレーション情報を取得
-        → withメソッド、リレーションをドットでつなぐ*/
-        $ownerInfo = Owner::with('shop.product.imageFirst')
-        ->where('id', Auth::id())->paginate(10);
+        /* Ownerモデルと関連データをEagerLoadしてデータベースクエリを最適化
+        * 1. Ownerモデルに紐づけ各オーナーの店舗と商品を取得
+        * 2. 取得した商品情報と連携し、imageFirstモデルでIDと画像の最初を取得
+        */
+        $owners = Owner::with(['shop.product.imageFirst'])
+        ->where('id', Auth::id())
+        ->get();
 
+        // 商品を3件ごとに表示する
+        $perPage = 3;
+        // ループでOwner毎取得し、ownerの商品IDと一致した部分を取得する
+        $owners->each(function ($owner) use ($perPage) {
+            $owner->shop->product = Product::where('shop_id', $owner->shop->id)->paginate($perPage);
+        });
 
-        // dd($ownerInfo);
-
-        // foreach($ownerInfo as $owner){
-        //    dd($owner->shop->product);
-        //     foreach($owner->shop->product as $product){
-        //         dd($product->imageFirst->filename);
-        //     }
-        // }
-
-        // redirect owner/products/index.blade.php
-        return view('owner.products.index',compact('ownerInfo'));
+        return view('owner.products.index', compact('owners'));
 
     }
 

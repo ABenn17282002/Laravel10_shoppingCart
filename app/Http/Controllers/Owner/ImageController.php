@@ -53,7 +53,7 @@ class ImageController extends Controller
         $images = Image::where('owner_id', Auth::id())
         // 降順取得20件まで
         ->orderBy('updated_at', 'desc')
-        ->paginate(20);
+        ->paginate(3);
 
         // owner/images/index.balde.phpにimages変数付で返す
         return view('owner.images.index',compact('images'));
