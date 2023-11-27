@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Shop;
 // SecondaryCategoryモデルの追加
 use App\Models\SecondaryCategory;
+// stockモデルの使用
+use App\Models\Stock;
 
 class Product extends Model
 {
@@ -54,5 +56,14 @@ class Product extends Model
     public function imageFirst()
     {
         return $this->belongsTo(Image::class, 'image1', 'id');
+    }
+
+    /**
+    * Prouduct(製品)に関わるStoc情報を全て取得
+    * 1対多モデル
+    */
+    public function stock()
+    {
+        return $this->hasMany(Stock::class);
     }
 }

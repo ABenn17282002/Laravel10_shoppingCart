@@ -19,7 +19,7 @@
                     {{-- 画像をflexで横並びにする --}}
                     <div class="flex flex-wrap">
                         {{-- foreach構文でproducts_tableからデータを取得 --}}
-                        @foreach ($ownerInfo as $owner)
+                        @foreach ($owners as $owner)
                             @foreach ($owner->shop->product as $product)
                             {{-- width:1/2→1/4に変更, padding-2, md:p-4に変更 --}}
                             <div class="w-1/4 p-2 md:p-4">
@@ -37,7 +37,7 @@
                         @endforeach
                         </div>
                     {{-- ページネーション --}}
-                    {{ $ownerInfo ->links() }}
+                    {{ $owner->shop->product->links() }}
                 </div>
             </div>
         </div>
