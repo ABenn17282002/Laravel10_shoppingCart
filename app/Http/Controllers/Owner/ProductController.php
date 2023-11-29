@@ -95,15 +95,7 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
+        dd($request);
     }
 
     /**
