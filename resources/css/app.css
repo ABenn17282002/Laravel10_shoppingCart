@@ -1,3 +1,5 @@
+/* CSSは上記に追記 Vue3.0~ */
+@import 'micromodal';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
