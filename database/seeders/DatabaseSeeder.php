@@ -22,9 +22,9 @@ class DatabaseSeeder extends Seeder
             // CategorySeederクラスの追加
             CategorySeeder::class,
             // Productクラスの追加
-            ProductSeeder::class,
+            // ProductSeeder::class,
             // Stockクラスの追加
-            StockSeeder::class,
+            // StockSeeder::class,
         ]);
     }
 }
