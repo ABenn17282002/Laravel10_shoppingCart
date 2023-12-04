@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 // DBFacadeの使用
 use Illuminate\Support\Facades\DB;
-// Image,Product,Owner,productsモデルの使用
+// Image,Product,Ownerモデルの使用
 Use App\Models\Image;
 use App\Models\Product;
 use App\Models\Owner;

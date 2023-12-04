@@ -15,7 +15,8 @@ use Illuminate\Support\Facades\Route;
 
 // Ownerコントローラーの使用
 use App\Http\Controllers\Admin\OwnersController;
-
+// CategoryControllerコントローラーの使用
+use App\Http\Controllers\Admin\CategoryController;
 /*
 |--------------------------------------------------------------------------
 | admin Routes
@@ -35,10 +36,6 @@ use App\Http\Controllers\Admin\OwnersController;
 Route::get('/dashboard', function () {
     return view('admin.dashboard');
 })->middleware(['auth:admin', 'verified'])->name('dashboard');
-
-// リソースコントローラ(show画面を除外したルーティング)
-Route::resource('owners', OwnersController::class)
-->middleware('auth:admin')->except(['show']);
 
 // auth.phpの引用
 Route::middleware('guest')->group(function () {
@@ -67,33 +64,25 @@ Route::middleware('guest')->group(function () {
 
 // auth.phpの引用+Adminモデル
 Route::middleware('auth:admin')->group(function () {
-    Route::get('verify-email', EmailVerificationPromptController::class)
-                ->name('verification.notice');
-
-    Route::get('verify-email/{id}/{hash}', VerifyEmailController::class)
-                ->middleware(['signed', 'throttle:6,1'])
-                ->name('verification.verify');
-
-    Route::post('email/verification-notification', [EmailVerificationNotificationController::class, 'store'])
-                ->middleware('throttle:6,1')
-                ->name('verification.send');
-
-    Route::get('confirm-password', [ConfirmablePasswordController::class, 'show'])
-                ->name('password.confirm');
-
+    // ログイン機能
+    Route::get('verify-email', EmailVerificationPromptController::class)->name('verification.notice');
+    Route::get('verify-email/{id}/{hash}', VerifyEmailController::class)->middleware(['signed', 'throttle:6,1'])->name('verification.verify');
+    Route::post('email/verification-notification', [EmailVerificationNotificationController::class, 'store'])->middleware('throttle:6,1')->name('verification.send');
+    Route::get('confirm-password', [ConfirmablePasswordController::class, 'show'])->name('password.confirm');
     Route::post('confirm-password', [ConfirmablePasswordController::class, 'store']);
-
     Route::put('password', [PasswordController::class, 'update'])->name('password.update');
-
-    Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
-                ->name('logout');
-});
-
-// adminプロフィール編集用
-Route::middleware('auth:admin')->group(function () {
+    Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
+    // adminプロフィール編集用
     Route::get('/profile', [AdminProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [AdminProfileController::class, 'update'])->name('profile.update');
+    // カテゴリー機能の作成(一覧+詳細まで)
+    Route::get('/categories', [CategoryController::class, 'Primaryindex'])->name('categories.index');
+    Route::get('/categories/{primaryCategory}', [CategoryController::class, 'CategoryEdit'])->name('categories.edit');
 });
+
+// リソースコントローラ(show画面を除外したルーティング)
+Route::resource('owners', OwnersController::class)
+->middleware('auth:admin')->except(['show']);
 
 // 期限切れOwner一覧表示及び物理削除用ルート
 Route::prefix('expired-owners')->
