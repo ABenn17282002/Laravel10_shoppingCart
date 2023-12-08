@@ -31,8 +31,7 @@
                                         @foreach ($primaryCategories as $primaryCategory)
                                         <tr>
                                             <td class="md:px-4 py-3">{{ $primaryCategory->name }}</td>
-                                            <td class="md:px-4 py-3"><a href="{{ route('admin.categories.edit', $primaryCategory) }}">{{ $primaryCategory->secondary_count}}<a></td>
-                                            </td>
+                                            <td class="md:px-4 py-3"><a href="{{ route('admin.categories.show', $primaryCategory) }}">{{ $primaryCategory->secondary_count}}<a></td>
                                         </tr>
                                     </tbody>
                                     @endforeach

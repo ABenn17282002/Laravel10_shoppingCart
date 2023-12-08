@@ -33,14 +33,14 @@ class CategoryController extends Controller
     }
 
     /**
-    * Category Edit
+    * Category Show
     */
-    public function CategoryEdit(PrimaryCategory $primaryCategory)
+    public function CategoryShow(PrimaryCategory $primaryCategory)
     {
         $secondaryCategories = $primaryCategory->secondary;
 
         // dd($secondaryCategories);
 
-        return view('admin.categories.edit', compact('primaryCategory', 'secondaryCategories'));
+        return view('admin.categories.show', compact('primaryCategory', 'secondaryCategories'));
     }
 }
