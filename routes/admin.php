@@ -77,7 +77,7 @@ Route::middleware('auth:admin')->group(function () {
     Route::patch('/profile', [AdminProfileController::class, 'update'])->name('profile.update');
     // カテゴリー機能の作成(一覧+詳細まで)
     Route::get('/categories', [CategoryController::class, 'Primaryindex'])->name('categories.index');
-    Route::get('/categories/{primaryCategory}', [CategoryController::class, 'CategoryShow'])->name('categories.show');
+    Route::get('/categories/{primaryCategory}', [CategoryController::class, 'CategoryEdit'])->name('categories.edit');
 });
 
 // リソースコントローラ(show画面を除外したルーティング)

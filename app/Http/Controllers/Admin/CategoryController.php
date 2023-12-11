@@ -33,14 +33,17 @@ class CategoryController extends Controller
     }
 
     /**
-    * Category Show
+    * Display the editing form for a specific primary category and its associated secondary categories.
+    *
+    * @param  PrimaryCategory  $primaryCategory
+    * @return \Illuminate\Http\Response
     */
-    public function CategoryShow(PrimaryCategory $primaryCategory)
+    public function CategoryEdit(PrimaryCategory $primaryCategory)
     {
+        // Secondary情報の取得
         $secondaryCategories = $primaryCategory->secondary;
 
-        // dd($secondaryCategories);
-
-        return view('admin.categories.show', compact('primaryCategory', 'secondaryCategories'));
+        return view('admin.categories.edit', compact('primaryCategory', 'secondaryCategories'));
     }
+
 }
