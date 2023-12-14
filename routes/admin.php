@@ -12,7 +12,6 @@ use App\Http\Controllers\Admin\Auth\RegisteredUserController;
 use App\Http\Controllers\Admin\Auth\VerifyEmailController;
 use App\Http\Controllers\Admin\Auth\AdminProfileController; // ← route情報変更
 use Illuminate\Support\Facades\Route;
-
 // Ownerコントローラーの使用
 use App\Http\Controllers\Admin\OwnersController;
 // CategoryControllerコントローラーの使用
@@ -28,11 +27,7 @@ use App\Http\Controllers\Admin\CategoryController;
 |
 */
 
-// 管理者:welcome画面非表示
-// Route::get('/', function () {
-//     return view('admin.welcome');
-// });
-
+// 管理者用Dashboard
 Route::get('/dashboard', function () {
     return view('admin.dashboard');
 })->middleware(['auth:admin', 'verified'])->name('dashboard');
@@ -75,9 +70,12 @@ Route::middleware('auth:admin')->group(function () {
     // adminプロフィール編集用
     Route::get('/profile', [AdminProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [AdminProfileController::class, 'update'])->name('profile.update');
-    // カテゴリー機能の作成(一覧+詳細まで)
+    // カテゴリー一覧、編集
     Route::get('/categories', [CategoryController::class, 'Primaryindex'])->name('categories.index');
     Route::get('/categories/{primaryCategory}', [CategoryController::class, 'CategoryEdit'])->name('categories.edit');
+    // カテゴリーの更新(引数を２つ渡す)
+    Route::put('/categories/{id}', [CategoryController::class, 'CategoryUpDate'])->name('categories.update');
+
 });
 
 // リソースコントローラ(show画面を除外したルーティング)

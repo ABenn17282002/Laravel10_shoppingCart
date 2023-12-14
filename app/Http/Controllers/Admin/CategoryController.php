@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\DB;
 // Primary・SecondaryCategoryモデルの使用
 use App\Models\PrimaryCategory;
 use App\Models\SecondaryCategory;
+// CategoryUpdateRequestの使用
+use App\Http\Requests\CategoryUpdateRequest;
 
 class CategoryController extends Controller
 {
@@ -43,7 +45,50 @@ class CategoryController extends Controller
         // Secondary情報の取得
         $secondaryCategories = $primaryCategory->secondary;
 
+
         return view('admin.categories.edit', compact('primaryCategory', 'secondaryCategories'));
+    }
+
+
+    /**
+    * Update the specified resource in storage.
+    */
+    public function CategoryUpDate(CategoryUpdateRequest $request, $primaryCategoryId)
+    {
+        // Validationの実施
+        $validated = $request->validated();
+
+        // プライマリーカテゴリーの更新
+        $primaryCategory = PrimaryCategory::findOrFail($primaryCategoryId);
+        $primaryCategory->name = $validated['primary_name'];
+        $primaryCategory->save();
+
+        // 既存のセカンダリーカテゴリーの更新
+        if (array_key_exists('secondary', $validated)) {
+            foreach ($validated['secondary'] as $secId => $data) {
+                $secondaryCategory = SecondaryCategory::findOrFail($secId);
+                $secondaryCategory->name = $data['name'] ?? $secondaryCategory->name;
+                $secondaryCategory->sort_order = $data['sort_order'] ?? $secondaryCategory->sort_order;
+                $secondaryCategory->save();
+            }
+        }
+
+        // 新規セカンダリーカテゴリーの追加
+        if (array_key_exists('new_secondary', $validated)) {
+            foreach ($validated['new_secondary'] as $data) {
+                if (!empty($data['name']) && isset($data['sort_order'])) {
+                    SecondaryCategory::create([
+                        'primary_category_id' => $primaryCategoryId,
+                        'name' => $data['name'],
+                        'sort_order' => $data['sort_order'],
+                    ]);
+                }
+            }
+        }
+
+        // 更新が完了したらリダイレクト
+        return redirect()->route('admin.categories.index')
+                    ->with('success', 'カテゴリが更新されました。');
     }
 
 }
