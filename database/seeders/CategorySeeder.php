@@ -52,17 +52,17 @@ class CategorySeeder extends Seeder
             ],
             [
                 'name' => 'ギフトセット',
-                'sort_order' => 4,
+                'sort_order' => 1,
                 'primary_category_id' => 2
             ],
             [
                 'name' => 'メモリアル・記念品',
-                'sort_order' => 5,
+                'sort_order' => 2,
                 'primary_category_id' => 2
             ],
             [
                 'name' => 'おむつケーキ',
-                'sort_order' => 6,
+                'sort_order' => 3,
                 'primary_category_id' => 2
             ],
         ]);

@@ -30,11 +30,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// web.phpからの引用+ownerモデル
-Route::get('/', function () {
-    return view('owner.welcome');
-});
-
+// Owner用Dashboard
 Route::get('/dashboard', function () {
     return view('owner.dashboard');
 })->middleware(['auth:owners', 'verified'])->name('dashboard');

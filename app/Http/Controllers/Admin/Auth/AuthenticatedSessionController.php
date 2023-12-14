@@ -47,7 +47,7 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerateToken();
 
-        // admin用に編集
-        return redirect('/admin');
+        // admin/loginへリダイレクト
+        return redirect('/admin/login');
     }
 }
