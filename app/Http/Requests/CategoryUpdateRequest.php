@@ -46,21 +46,42 @@ class CategoryUpdateRequest extends FormRequest
 
             'new_secondary.*.name' => [
                 'sometimes',
-                'required',
+                'nullable',
                 'string',
                 'max:255',
+                // 既存で使用されている名前は不可
                 Rule::unique('secondary_categories', 'name')
                 ->where('primary_category_id', $primaryCategoryId)
                 ->ignore($ignoreId, 'id'),
+                // IDが登録されているときは新規カテゴリーも入力
+                function ($attribute, $value, $fail) {
+                    $sortOrderField = str_replace('.name', '.sort_order', $attribute);
+                    $sortOrderValue = $this->input($sortOrderField);
+
+                    if ((empty($value) && !empty($sortOrderValue)) || (!empty($value) && empty($sortOrderValue))) {
+                        $fail('新規カテゴリーの名称とソート順の両方を入力してください。');
+                    }
+                },
             ],
             'new_secondary.*.sort_order' => [
                 'sometimes',
-                'required',
+                'nullable',
                 'integer',
+                'min:1',
                 'distinct',
+                // 既存で使用されているIDは不可
                 Rule::unique('secondary_categories', 'sort_order')
                 ->where('primary_category_id', $primaryCategoryId)
                 ->ignore($ignoreId, 'id'),
+                // カテゴリー名が登録されているときはIDも入力
+                function ($attribute, $value, $fail) {
+                    $nameField = str_replace('.sort_order', '.name', $attribute);
+                    $nameValue = $this->input($nameField);
+
+                    if ((empty($value) && !empty($nameValue)) || (!empty($value) && empty($nameValue))) {
+                        $fail('新規カテゴリーの名称とソート順の両方を入力してください。');
+                    }
+                },
             ],
         ];
     }
@@ -88,9 +109,10 @@ class CategoryUpdateRequest extends FormRequest
             'new_secondary.*.name.max' => '新しいセカンダリーカテゴリー名は最大255文字までです。',
             'new_secondary.*.sort_order.required' => '新しいセカンダリーカテゴリーのソート順は必須です。',
             'new_secondary.*.sort_order.integer' => '新しいセカンダリーカテゴリーのソート順は整数である必要があります。',
+            'new_secondary.*.sort_order.min' => '新しいセカンダリーカテゴリーのソート順は整数である必要があります。',
             'new_secondary.*.sort_order.distinct' => '新しいセカンダリーカテゴリーのソート順は一意である必要があります。',
             'new_secondary.*.name.unique_secondary_name' => '指定された新しいセカンダリーカテゴリー名は既に使用されています。',
-            'new_secondary.*.sort_order.unique_secondary_sort_order' => '指定された新しいソート順は既に使用されています。',
+            'new_secondary.*.sort_order.unique' => '指入力された新規カテゴリのソート順は既に存在しています。別の値を試してください。',
         ];
 
     }

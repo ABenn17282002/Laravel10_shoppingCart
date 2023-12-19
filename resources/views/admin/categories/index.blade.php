@@ -14,7 +14,7 @@
                             <x-flash-message />
                             {{-- 新規作成ボタン --}}
                             <div class="flex justify-end mb-4">
-                                <button onclick="" class="text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">新規登録する</button>
+                                <button onclick="location.href='{{ route('admin.categories.create')}}'"  class="text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">新規登録する</button>
                             </div>
                             {{-- カテゴリー情報はあるかの確認 --}}
                             @if (count($primaryCategories) > 0)

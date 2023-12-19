@@ -35,6 +35,15 @@ class CategoryController extends Controller
     }
 
     /**
+    * Show the form for creating a new resource.
+    */
+    public function Categorycreate()
+    {
+        // admin/categories/create.blade.phpに返す
+        return \view('admin.categories.create');
+    }
+
+    /**
     * Display the editing form for a specific primary category and its associated secondary categories.
     *
     * @param  PrimaryCategory  $primaryCategory
@@ -43,7 +52,7 @@ class CategoryController extends Controller
     public function CategoryEdit(PrimaryCategory $primaryCategory)
     {
         // Secondary情報の取得
-        $secondaryCategories = $primaryCategory->secondary;
+        $secondaryCategories = $primaryCategory->secondary()->orderBy('sort_order')->get();
 
 
         return view('admin.categories.edit', compact('primaryCategory', 'secondaryCategories'));
