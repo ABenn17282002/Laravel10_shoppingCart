@@ -70,10 +70,12 @@ Route::middleware('auth:admin')->group(function () {
     // adminプロフィール編集用
     Route::get('/profile', [AdminProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [AdminProfileController::class, 'update'])->name('profile.update');
-    // カテゴリー一覧、編集
+    // カテゴリー一覧
     Route::get('/categories', [CategoryController::class, 'Primaryindex'])->name('categories.index');
+    Route::get('/categories/create', [CategoryController::class, 'Categorycreate'])->name('categories.create');
+    // カテゴリーの編集
     Route::get('/categories/{primaryCategory}', [CategoryController::class, 'CategoryEdit'])->name('categories.edit');
-    // カテゴリーの更新(引数を２つ渡す)
+    // カテゴリーの更新(引数:id)
     Route::put('/categories/{id}', [CategoryController::class, 'CategoryUpDate'])->name('categories.update');
 
 });

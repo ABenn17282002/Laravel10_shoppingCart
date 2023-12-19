@@ -89,7 +89,6 @@
             </div>
         </div>
     </div>
-</div>
 <script>
 function addNewCategory(index) {
     const newRow = document.createElement('tr');
