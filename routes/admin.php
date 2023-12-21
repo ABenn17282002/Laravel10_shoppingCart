@@ -72,7 +72,9 @@ Route::middleware('auth:admin')->group(function () {
     Route::patch('/profile', [AdminProfileController::class, 'update'])->name('profile.update');
     // カテゴリー一覧
     Route::get('/categories', [CategoryController::class, 'Primaryindex'])->name('categories.index');
+    // カテゴリー新規作成+登録
     Route::get('/categories/create', [CategoryController::class, 'Categorycreate'])->name('categories.create');
+    Route::post('/categories/store', [CategoryController::class, 'CategoryStore'])->name('categories.store');
     // カテゴリーの編集
     Route::get('/categories/{primaryCategory}', [CategoryController::class, 'CategoryEdit'])->name('categories.edit');
     // カテゴリーの更新(引数:id)

@@ -15,6 +15,9 @@
                             @if ($errors->any())
                             <div>
                                 <ul>
+                                    @if ($errors->has('primary_sort_order'))
+                                        <li style="color: red;">{{ $errors->first('primary_sort_order') }}</li>
+                                    @endif
                                     @if ($errors->has('primary_name'))
                                         <li style="color: red;">{{ $errors->first('primary_name') }}</li>
                                     @endif
@@ -34,9 +37,18 @@
                             </div>
                             @endif
                             {{-- プライマリーカテゴリーの編集 --}}
-                            <div class="mb-4">
-                                <label for="primary_name" class="text-sm text-gray-600">プライマリーカテゴリー情報</label>
-                                <input type="text" id="primary_name" name="primary_name" value="{{ $primaryCategory->name }}" class="w-full bg-gray-100 rounded border border-gray-300" required>
+                            <label class="text-sm text-gray-600">プライマリーカテゴリー情報</label>
+                            <div class="mb-4 flex">
+                                {{-- Primary Category sort_order --}}
+                                <div class="w-1/6">
+                                    <label for="primary_sort_order" class="text-sm text-gray-600">ソート順</label>
+                                    <input type="number" id="primary_sort_order" name="primary_sort_order" value="{{ $primaryCategory->sort_order }}"  class="w-full bg-gray-100 rounded border border-gray-300" required>
+                                </div>
+                                {{-- Primary Category name --}}
+                                <div class="w-5/6 mr-4">
+                                    <label for="primary_name" class="text-sm text-gray-600">カテゴリー名</label>
+                                    <input type="text" id="primary_name" name="primary_name" value="{{ $primaryCategory->name }}" class="w-full bg-gray-100 rounded border border-gray-300" required>
+                                </div>
                             </div>
 
                             {{-- 既存のセカンダリーカテゴリーの編集 --}}
@@ -67,10 +79,10 @@
                                                 {{-- 新規セカンダリーカテゴリーの追加行 --}}
                                                     <tr id="newCategoryRow">
                                                     <td class="border px-4 py-2">
-                                                        <input type="number" name="new_secondary[0][sort_order]" class="w-full bg-gray-100 rounded border border-gray-300 focus:outline-none focus:border-indigo-500 text-base px-3 py-2">
+                                                        <input type="number" name="new_secondary[0][sort_order]" value="" class="w-full bg-gray-100 rounded border border-gray-300 focus:outline-none focus:border-indigo-500 text-base px-3 py-2">
                                                     </td>
                                                     <td class="border px-4 py-2">
-                                                        <input type="text" name="new_secondary[0][name]" class="w-full bg-gray-100 rounded border border-gray-300 focus:outline-none focus:border-indigo-500 text-base px-3 py-2">
+                                                        <input type="text" name="new_secondary[0][name]" value="" class="w-full bg-gray-100 rounded border border-gray-300 focus:outline-none focus:border-indigo-500 text-base px-3 py-2">
                                                     </td>
                                                     <td class="border px-4 py-2">
                                                         <button type="button" onclick="addNewCategory(0)" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded">追加</button>
@@ -90,14 +102,16 @@
         </div>
     </div>
 <script>
-function addNewCategory(index) {
+let newIndex = 1; // 新しい行のインデックスを初期化
+
+function addNewCategory() {
     const newRow = document.createElement('tr');
     newRow.innerHTML = `
         <td class="border px-4 py-2">
-            <input type="number" name="new_secondary[${index}][sort_order]" class="w-full bg-gray-100 rounded border border-gray-300 focus:outline-none focus:border-indigo-500 text-base px-3 py-2">
+            <input type="number" name="new_secondary[${newIndex}][sort_order]" class="w-full bg-gray-100 rounded border border-gray-300 focus:outline-none focus:border-indigo-500 text-base px-3 py-2">
         </td>
         <td class="border px-4 py-2">
-            <input type="text" name="new_secondary[${index}][name]" class="w-full bg-gray-100 rounded border border-gray-300 focus:outline-none focus:border-indigo-500 text-base px-3 py-2">
+            <input type="text" name="new_secondary[${newIndex}][name]" class="w-full bg-gray-100 rounded border border-gray-300 focus:outline-none focus:border-indigo-500 text-base px-3 py-2">
         </td>
         <td class="border px-4 py-2 text-center">
             <button type="button" class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-3 rounded">削除</button>
@@ -105,13 +119,15 @@ function addNewCategory(index) {
     `;
 
     // フォームに新しい行を追加
-    document.querySelector('#newCategoryRow').parentNode.appendChild(newRow);
+    document.querySelector('tbody').appendChild(newRow);
 
     // 削除ボタンの要素を取得し、クリックイベントリスナーを追加
     const removeButton = newRow.querySelector('button');
     removeButton.onclick = function() {
         newRow.remove();
     };
+
+    newIndex++; // インデックスを増やす
 }
 </script>
 </x-app-layout>
