@@ -11,8 +11,11 @@ use Illuminate\Support\Facades\DB;
 // Primary・SecondaryCategoryモデルの使用
 use App\Models\PrimaryCategory;
 use App\Models\SecondaryCategory;
-// CategoryUpdateRequestの使用
-use App\Http\Requests\CategoryUpdateRequest;
+// CategoryRequestの使用
+use App\Http\Requests\CategoryRequest;
+// QueryExceptionクラスの使用
+use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Log;
 
 class CategoryController extends Controller
 {
@@ -44,6 +47,58 @@ class CategoryController extends Controller
     }
 
     /**
+    * Store a newly created resource in storage.
+    */
+    public function CategoryStore(CategoryRequest $request)
+    {
+        // Validationの実施
+        $validated = $request->validated();
+
+        try {
+            // トランザクションの開始
+            DB::beginTransaction();
+
+            // 1. Primaryカテゴリー作成と同時にprimary_category_idを設定
+            $primaryCategory = new PrimaryCategory();
+            $primaryCategory->name = $request->input('primary_name');
+            $primaryCategory->sort_order = $request->input('primary_sort_order');
+            $primaryCategory->save();
+
+            // 2. nullでない場合のみセカンダリカテゴリーを作成
+            $newSecondaryCategories = $request->input('new_secondary');
+
+            if (!empty($newSecondaryCategories)) {
+                foreach ($newSecondaryCategories as $secondaryData) {
+                    if ($secondaryData['sort_order'] !== null && $secondaryData['name'] !== null) {
+                        $secondaryCategory = new SecondaryCategory();
+                        $secondaryCategory->sort_order = $secondaryData['sort_order'];
+                        $secondaryCategory->name = $secondaryData['name'];
+                        $secondaryCategory->primary_category_id = $primaryCategory->id; // primary_category_idを設定
+                        $secondaryCategory->save();
+                    }
+                }
+            }
+
+            // トランザクションのコミット
+            DB::commit();
+
+            // トランザクションが正常に完了した場合の処理
+            return redirect()->route('admin.categories.index')->with('success', 'カテゴリー登録が完了しました.');
+
+        } catch (QueryException $e) {
+            // クエリ実行時にエラーが発生した場合の処理
+            DB::rollback(); // トランザクションのロールバック
+            Log::error($e);
+            return redirect()->back()->with('error', 'データ保存中にエラーが発生しました。');
+        } catch (Throwable $e) {
+            // その他の例外が発生した場合の処理
+            DB::rollback(); // トランザクションのロールバック
+            Log::error($e);
+            throw $e; // 例外を再スロー
+        }
+    }
+
+    /**
     * Display the editing form for a specific primary category and its associated secondary categories.
     *
     * @param  PrimaryCategory  $primaryCategory
@@ -62,13 +117,14 @@ class CategoryController extends Controller
     /**
     * Update the specified resource in storage.
     */
-    public function CategoryUpDate(CategoryUpdateRequest $request, $primaryCategoryId)
+    public function CategoryUpDate(CategoryRequest $request, $primaryCategoryId)
     {
         // Validationの実施
         $validated = $request->validated();
 
         // プライマリーカテゴリーの更新
         $primaryCategory = PrimaryCategory::findOrFail($primaryCategoryId);
+        $primaryCategory->sort_order = $request->input('primary_sort_order');
         $primaryCategory->name = $validated['primary_name'];
         $primaryCategory->save();
 

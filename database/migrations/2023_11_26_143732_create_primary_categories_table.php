@@ -28,9 +28,8 @@ return new class extends Migration
             $table->string('name');
             // ソート順
             $table->integer('sort_order');
-            // 第１カテゴリーID(外部制約キー)
-            $table->foreignId('primary_category_id')
-            ->constrained();
+            // 第１カテゴリーID(外部制約キー、初期IDなし)
+            $table->foreignId('primary_category_id')->constrained();
             $table->timestamps();
         });
     }

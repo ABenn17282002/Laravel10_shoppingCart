@@ -6,8 +6,10 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 // DBFacadeの使用
 use Illuminate\Support\Facades\DB;
+// UniquePrimarySortOrderクラスの使用
+use App\Rules\UniquePrimarySortOrder;
 
-class CategoryUpdateRequest extends FormRequest
+class CategoryRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -29,21 +31,24 @@ class CategoryUpdateRequest extends FormRequest
         $primaryCategoryId = $this->route('id');
         $ignoreId = $this->route('secondary_category');
 
-        return [
+        $rules = [
             'primary_name' => 'required|string|max:255',
-
+            'primary_sort_order' => [
+                'required',
+                'integer',
+                'min:1',
+                new UniquePrimarySortOrder($primaryCategoryId), // カスタムバリデーションルールを使用
+            ],
             'secondary.*.name' => [
                 'required',
                 'string',
                 'max:255',
-
             ],
             'secondary.*.sort_order' => [
                 'required',
                 'integer',
                 'distinct'
             ],
-
             'new_secondary.*.name' => [
                 'sometimes',
                 'nullable',
@@ -57,7 +62,6 @@ class CategoryUpdateRequest extends FormRequest
                 function ($attribute, $value, $fail) {
                     $sortOrderField = str_replace('.name', '.sort_order', $attribute);
                     $sortOrderValue = $this->input($sortOrderField);
-
                     if ((empty($value) && !empty($sortOrderValue)) || (!empty($value) && empty($sortOrderValue))) {
                         $fail('新規カテゴリーの名称とソート順の両方を入力してください。');
                     }
@@ -77,13 +81,14 @@ class CategoryUpdateRequest extends FormRequest
                 function ($attribute, $value, $fail) {
                     $nameField = str_replace('.sort_order', '.name', $attribute);
                     $nameValue = $this->input($nameField);
-
                     if ((empty($value) && !empty($nameValue)) || (!empty($value) && empty($nameValue))) {
                         $fail('新規カテゴリーの名称とソート順の両方を入力してください。');
                     }
                 },
             ],
         ];
+
+        return $rules;
     }
 
     // フォームvalidationMessage
@@ -94,6 +99,9 @@ class CategoryUpdateRequest extends FormRequest
             'primary_name.required' => 'メインカテゴリー名は必須です。',
             'primary_name.string' => 'メインカテゴリー名は文字列である必要があります。',
             'primary_name.max' => 'メインカテゴリー名は最大255文字までです。',
+            'primary_sort_order.required'=> 'メインカテゴリーのソート順は必須です。',
+            'primary_sort_order.integer' => '新しいセカンダリーカテゴリーのソート順は整数である必要があります。',
+            'primary_sort_order.min' => 'メインカテゴリーのソート順は整数である必要があります。',
 
             // SecondaryCategory
             'secondary.*.name.required' => 'セカンダリーカテゴリー名は必須です。',
@@ -104,10 +112,8 @@ class CategoryUpdateRequest extends FormRequest
             'secondary.*.sort_order.distinct' => 'セカンダリーカテゴリーのソート順は一意である必要があります。',
 
             // New_SecondaryCategory
-            'new_secondary.*.name.required' => '新しいセカンダリーカテゴリー名は必須です。',
             'new_secondary.*.name.string' => '新しいセカンダリーカテゴリー名は文字列である必要があります。',
             'new_secondary.*.name.max' => '新しいセカンダリーカテゴリー名は最大255文字までです。',
-            'new_secondary.*.sort_order.required' => '新しいセカンダリーカテゴリーのソート順は必須です。',
             'new_secondary.*.sort_order.integer' => '新しいセカンダリーカテゴリーのソート順は整数である必要があります。',
             'new_secondary.*.sort_order.min' => '新しいセカンダリーカテゴリーのソート順は整数である必要があります。',
             'new_secondary.*.sort_order.distinct' => '新しいセカンダリーカテゴリーのソート順は一意である必要があります。',
