@@ -70,21 +70,33 @@ Route::middleware('auth:admin')->group(function () {
     // adminプロフィール編集用
     Route::get('/profile', [AdminProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [AdminProfileController::class, 'update'])->name('profile.update');
-    // カテゴリー一覧
-    Route::get('/categories', [CategoryController::class, 'Primaryindex'])->name('categories.index');
-    // カテゴリー新規作成+登録
-    Route::get('/categories/create', [CategoryController::class, 'Categorycreate'])->name('categories.create');
-    Route::post('/categories/store', [CategoryController::class, 'CategoryStore'])->name('categories.store');
-    // カテゴリーの編集
-    Route::get('/categories/{primaryCategory}', [CategoryController::class, 'CategoryEdit'])->name('categories.edit');
-    // カテゴリーの更新(引数:id)
-    Route::put('/categories/{id}', [CategoryController::class, 'CategoryUpDate'])->name('categories.update');
 
 });
 
 // リソースコントローラ(show画面を除外したルーティング)
 Route::resource('owners', OwnersController::class)
 ->middleware('auth:admin')->except(['show']);
+
+// カテゴリー情報
+Route::prefix('categories')->middleware('auth:admin')->group(function () {
+    // カテゴリー一覧
+    Route::get('/', [CategoryController::class, 'Primaryindex'])->name('categories.index');
+    // カテゴリー新規作成+登録
+    Route::get('/create', [CategoryController::class, 'Categorycreate'])->name('categories.create');
+    Route::post('/store', [CategoryController::class, 'CategoryStore'])->name('categories.store');
+    // カテゴリーの編集
+    Route::get('/{primaryCategory}', [CategoryController::class, 'CategoryEdit'])->name('categories.edit');
+    // カテゴリーの更新(引数:id)
+    Route::put('/{id}', [CategoryController::class, 'CategoryUpDate'])->name('categories.update');
+    // カテゴリー情報の削除
+    Route::delete('/{id}', [CategoryController::class, 'CategoryTrash'])->name('categories.trash');
+});
+
+// 削除済みカテゴリー情報
+Route::prefix('expired-categories')->
+    middleware('auth:admin')->group(function(){
+        Route::get('index', [CategoryController::class, 'expiredCatergoryIndex'])->name('expired-categories.index');
+});
 
 // 期限切れOwner一覧表示及び物理削除用ルート
 Route::prefix('expired-owners')->

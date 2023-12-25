@@ -24,13 +24,17 @@
                     <x-nav-link :href="route('admin.owners.index')" :active="request()->routeIs('admin.owners.index')">
                         オーナー管理
                     </x-nav-link>
+                    {{-- 期限切れオーナー一覧 --}}
+                    <x-nav-link :href="route('admin.expired-owners.index')" :active="request()->routeIs('admin.expired-owners.index')">
+                        期限切れオーナー一覧
+                    </x-nav-link>
                     {{-- カテゴリー管理用 --}}
                     <x-nav-link :href="route('admin.categories.index')" :active="request()->routeIs('admin.categories.index')">
                         カテゴリー管理
                     </x-nav-link>
-                    {{-- 期限切れオーナー一覧 --}}
-                    <x-nav-link :href="route('admin.expired-owners.index')" :active="request()->routeIs('admin.expired-owners.index')">
-                        期限切れオーナー一覧
+                    {{-- 削除済みカテゴリー情報一覧 --}}
+                    <x-nav-link :href="route('admin.expired-categories.index')" :active="request()->routeIs('admin.expired-categories.index')">
+                        削除済みカテゴリー情報
                     </x-nav-link>
                 </div>
             </div>
@@ -93,13 +97,17 @@
             <x-responsive-nav-link :href="route('admin.owners.index')" :active="request()->routeIs('admin.owners.index')">
                 オーナー管理
             </x-responsive-nav-link>
-            {{-- オーナ管理用 --}}
-            <x-responsive-nav-link :href="route('admin.categories.index')" :active="request()->routeIs('admin.categories.index')">
-                オーナー管理
-            </x-responsive-nav-link>
             {{-- 期限切れオーナー一覧 --}}
             <x-responsive-nav-link :href="route('admin.expired-owners.index')" :active="request()->routeIs('admin.expired-owners.index')">
                 期限切れオーナー一覧
+            </x-responsive-nav-link>
+            {{-- カテゴリー管理用 --}}
+            <x-responsive-nav-link :href="route('admin.categories.index')" :active="request()->routeIs('admin.categories.index')">
+                カテゴリー管理
+            </x-responsive-nav-link>
+            {{-- 削除済みカテゴリー情報一覧 --}}
+            <x-responsive-nav-link :href="route('admin.expired-categories.index')" :active="request()->routeIs('admin.expired-categories.index')">
+                削除済みカテゴリー情報
             </x-responsive-nav-link>
         </div>
 
