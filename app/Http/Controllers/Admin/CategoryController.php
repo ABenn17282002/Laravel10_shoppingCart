@@ -98,6 +98,7 @@ class CategoryController extends Controller
         }
     }
 
+
     /**
     * Display the editing form for a specific primary category and its associated secondary categories.
     *
@@ -108,7 +109,6 @@ class CategoryController extends Controller
     {
         // Secondary情報の取得
         $secondaryCategories = $primaryCategory->secondary()->orderBy('sort_order')->get();
-
 
         return view('admin.categories.edit', compact('primaryCategory', 'secondaryCategories'));
     }
@@ -154,6 +154,26 @@ class CategoryController extends Controller
         // 更新が完了したらリダイレクト
         return redirect()->route('admin.categories.index')
                     ->with('success', 'カテゴリが更新されました。');
+    }
+
+    /**
+    * Remove the specified resource from storage.
+    */
+    public function CategoryTrash(string $id)
+    {
+        //ソフトデリート
+        PrimaryCategory::findOrFail($id)->delete();
+
+        return \redirect()->route('admin.categories.index')
+        ->with('trash','カテゴリー情報をゴミ箱へ移しました');
+    }
+
+    /* Categoryゴミ箱情報の取得 */
+    public function expiredCatergoryIndex()
+    {
+        // softDeleteのみを取得
+        $expiredCategories = PrimaryCategory::onlyTrashed()->withCount('secondary')->get();
+        return view('admin.expired-categories',\compact('expiredCategories'));
     }
 
 }

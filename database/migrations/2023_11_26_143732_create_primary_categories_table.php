@@ -19,6 +19,8 @@ return new class extends Migration
             // ソート順
             $table->integer('sort_order');
             $table->timestamps();
+            // 論理削除用テーブルを追加
+            $table->softDeletes();
         });
 
         // Secondary_tableの定義
