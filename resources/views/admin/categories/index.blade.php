@@ -65,7 +65,7 @@
     <script>
         function deletePost(e) {
         'use strict';
-        if (confirm('データを完全削除しますか?')) {
+        if (confirm('この情報をゴミ箱へ移します。宜しいですか？')) {
         document.getElementById('delete_' + e.dataset.id).submit();
         }
         }

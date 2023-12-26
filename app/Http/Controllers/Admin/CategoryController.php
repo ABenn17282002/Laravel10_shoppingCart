@@ -176,4 +176,17 @@ class CategoryController extends Controller
         return view('admin.expired-categories',\compact('expiredCategories'));
     }
 
+    /* 削除済みカテゴリー情報の完全削除 */
+    public function expiredCatergoryDestroy($id)
+    {
+        // PrimaryCategoryモデルのインスタンスを取得
+        $primaryCategory = PrimaryCategory::onlyTrashed()->findOrFail($id);
+        // 関連するSecondaryCategoryレコードを削除
+        $primaryCategory->secondary()->forceDelete();
+        // PrimaryCategoryレコードを物理的に削除
+        $primaryCategory->forceDelete();
+
+        return redirect()->route('admin.expired-categories.index')
+        ->with('delete','カテゴリー情報を完全に削除しました');;
+    }
 }
