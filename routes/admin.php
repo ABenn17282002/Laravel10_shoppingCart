@@ -96,6 +96,7 @@ Route::prefix('categories')->middleware('auth:admin')->group(function () {
 Route::prefix('expired-categories')->
     middleware('auth:admin')->group(function(){
         Route::get('index', [CategoryController::class, 'expiredCatergoryIndex'])->name('expired-categories.index');
+        Route::post('destroy/{category}', [CategoryController::class, 'expiredCatergoryDestroy'])->name('expired-categories.destroy');
 });
 
 // 期限切れOwner一覧表示及び物理削除用ルート

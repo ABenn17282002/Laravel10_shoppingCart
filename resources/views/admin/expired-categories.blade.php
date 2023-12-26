@@ -15,7 +15,7 @@
                             </div>
                             {{-- カテゴリー情報はあるかの確認 --}}
                             @if (count($expiredCategories) > 0)
-                            <div class="lg:w-2/3 w-full mx-auto overflow-auto">
+                            <div class="lg:w-full w-full mx-auto overflow-auto">
                                 <table class="table-auto w-full text-left whitespace-no-wrap">
                                     <thead>
                                         <tr>
@@ -30,8 +30,8 @@
                                         {{-- 配列でデータベースで取得したものを１つずつ取得 --}}
                                         @foreach ($expiredCategories as $primaryCategory)
                                         <tr>
-                                            <td class="md:px-4 py-3">{{ $primaryCategory->sort_order }}</td>
-                                            <td class="md:px-4 py-3">{{ $primaryCategory->name }}</td>
+                                            <td class="md:px-4 py-3"><input type="number" id="primary_sort_order" name="primary_sort_order" value="{{ $primaryCategory->sort_order }}"  class="bg-gray-100 rounded border border-gray-300" required></td>
+                                            <td class="md:px-4 py-3"><input type="text" id="primary_name" name="primary_name" value="{{ $primaryCategory->name }}" class="bg-gray-100 rounded border border-gray-300" required></td>
                                             <td class="md:px-4 py-3">{{ $primaryCategory->secondary_count}}</td>
                                             <form  method="" action="">
                                                 @csrf
@@ -39,11 +39,11 @@
                                                     <button type="submit" class="bg-green-500 hover:bg-green-400 text-white rounded py-2 px-4">復元</button>
                                                 </td>
                                             </form>
-                                            <form id="" method="" action="">
+                                            <form id="delete_{{ $primaryCategory-> id }}" method="post" action="{{ route('admin.expired-categories.destroy', ['category' => $primaryCategory->id ])}}">
                                                 @csrf
                                                 {{-- 削除メソッド --}}
                                                 <td class="md:px-4 py-3">
-                                                    <a href="#" data-id="" onclick="deletePost(this)" class="text-white bg-red-400 border-0 py-2 px-4 focus:outline-none hover:bg-red-500 rounded ">削除</a>
+                                                    <a href="#" data-id="{{ $primaryCategory-> id }}" onclick="deletePost(this)" class="text-white bg-red-400 border-0 py-2 px-4 focus:outline-none hover:bg-red-500 rounded ">削除</a>
                                                 </td>
                                             </form>
                                         </tr>
@@ -60,5 +60,13 @@
             </div>
         </div>
     </div>
-
+{{-- 削除確認用アラート --}}
+<script>
+    function deletePost(e) {
+    'use strict';
+    if (confirm('データを完全削除しますか?')) {
+    document.getElementById('delete_' + e.dataset.id).submit();
+    }
+    }
+    </script>
 </x-app-layout>

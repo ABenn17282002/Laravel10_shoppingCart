@@ -38,7 +38,7 @@
                                                 @csrf
                                                 <td class="px-4 py-3">
                                                     {{-- data-id=>owner_id取得 ==>onclickで削除実行 --}}
-                                                    <a href="#" data-id="{{ $owner->id }}" onclick="deletePost(this)" class="text-white bg-red-400 border-0 py-2 px-4 focus:outline-none hover:bg-red-500 rounded ">完全削除</a>
+                                                    <a href="#" data-id="{{ $owner->id }}" onclick="deletePost(this)" class="text-white bg-red-400 border-0 py-2 px-4 focus:outline-none hover:bg-red-500 rounded ">削除</a>
                                                 </td>
                                             </form>
                                         </tr>
