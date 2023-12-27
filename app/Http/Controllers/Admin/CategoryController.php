@@ -16,6 +16,7 @@ use App\Http\Requests\CategoryRequest;
 // QueryExceptionクラスの使用
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\Rule;
 
 class CategoryController extends Controller
 {
@@ -188,5 +189,44 @@ class CategoryController extends Controller
 
         return redirect()->route('admin.expired-categories.index')
         ->with('delete','カテゴリー情報を完全に削除しました');;
+    }
+
+    /* 削除済みカテゴリー情報のリストア */
+    public function restoreCategory(Request $request, $id)
+    {
+        $category = PrimaryCategory::onlyTrashed()->findOrFail($id);
+
+        // バリデーションルールを定義
+        $rules = [
+            'sort_order' => [
+                'required',
+                'integer',
+                Rule::unique('primary_categories')->ignore($category->id)->whereNull('deleted_at'),
+            ],
+            'name' => [
+                'required',
+                'string',
+                Rule::unique('primary_categories')->ignore($category->id)->whereNull('deleted_at'),
+            ],
+        ];
+
+        // バリデーション実行
+        $request->validate($rules);
+
+        // カテゴリー情報を復元
+        $category->restore();
+        // ソート順と名前をリクエストから取得
+        $sortOrder = $request->input('sort_order');
+        $name = $request->input('name');
+
+        // カテゴリー情報を更新
+        $category->update([
+            'sort_order' => $sortOrder,
+            'name' => $name,
+        ]);
+
+        // 完了したらリダイレクト
+        return redirect()->route('admin.categories.index')
+                    ->with('success', 'カテゴリー情報を復元しました。');
     }
 }

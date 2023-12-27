@@ -14,8 +14,12 @@ class PrimaryCategory extends Model
     // ソフトデリートを有効化
     use HasFactory, SoftDeletes;
 
-    // ソフトデリートのカラム名の設定
-    protected $dates = ['deleted_at'];
+    // PrimaryCategoryに関するテーブル定義
+    protected $fillable = [
+        'name',
+        'sort_order',
+        'deleted_at',
+    ];
 
     public function secondary()
     {

@@ -13,6 +13,15 @@
                             <div class="flex justify-end mb-4">
                                 <button type="button" onclick="location.href='{{ route('admin.categories.index')}}'" class="bg-gray-200 border-0 py-2 px-8 focus:outline-none hover:bg-gray-400 rounded text-lg">戻る</button>
                             </div>
+                            @if ($errors->any())
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                            @endif
                             {{-- カテゴリー情報はあるかの確認 --}}
                             @if (count($expiredCategories) > 0)
                             <div class="lg:w-full w-full mx-auto overflow-auto">
@@ -29,12 +38,12 @@
                                     <tbody>
                                         {{-- 配列でデータベースで取得したものを１つずつ取得 --}}
                                         @foreach ($expiredCategories as $primaryCategory)
-                                        <tr>
-                                            <td class="md:px-4 py-3"><input type="number" id="primary_sort_order" name="primary_sort_order" value="{{ $primaryCategory->sort_order }}"  class="bg-gray-100 rounded border border-gray-300" required></td>
-                                            <td class="md:px-4 py-3"><input type="text" id="primary_name" name="primary_name" value="{{ $primaryCategory->name }}" class="bg-gray-100 rounded border border-gray-300" required></td>
-                                            <td class="md:px-4 py-3">{{ $primaryCategory->secondary_count}}</td>
-                                            <form  method="" action="">
-                                                @csrf
+                                        <form method="post" action="{{ route('admin.expired-categories.restore', ['category' => $primaryCategory->id ])}}">
+                                            @csrf
+                                            <tr>
+                                                <td class="md:px-4 py-3"><input type="number" id="sort_order_{{ $primaryCategory->id }}" name="sort_order" value="{{ $primaryCategory->sort_order }}"  class="bg-gray-100 rounded border border-gray-300" required></td>
+                                                <td class="md:px-4 py-3"><input type="text" id="name_{{ $primaryCategory->id }}" name="name" value="{{ $primaryCategory->name }}" class="bg-gray-100 rounded border border-gray-300" required></td>
+                                                <td class="md:px-4 py-3">{{ $primaryCategory->secondary_count}}</td>
                                                 <td class="px-4 py-3">
                                                     <button type="submit" class="bg-green-500 hover:bg-green-400 text-white rounded py-2 px-4">復元</button>
                                                 </td>
