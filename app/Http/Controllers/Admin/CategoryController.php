@@ -99,7 +99,6 @@ class CategoryController extends Controller
         }
     }
 
-
     /**
     * Display the editing form for a specific primary category and its associated secondary categories.
     *
@@ -114,6 +113,19 @@ class CategoryController extends Controller
         return view('admin.categories.edit', compact('primaryCategory', 'secondaryCategories'));
     }
 
+    public function deleteSecondaryCategory($second_id)
+    {
+        try {
+            // セカンダリーカテゴリを削除
+            SecondaryCategory::findOrFail($second_id)->delete();
+
+            // 削除が成功したらリダイレクト
+            return redirect()->back()->with('success', 'セカンダリーカテゴリが削除されました。');
+        } catch (\Exception $e) {
+            // 削除が失敗した場合の処理
+            return redirect()->back()->with('error', 'セカンダリーカテゴリの削除中にエラーが発生しました。');
+        }
+    }
 
     /**
     * Update the specified resource in storage.

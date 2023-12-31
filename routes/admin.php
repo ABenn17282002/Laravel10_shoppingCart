@@ -88,6 +88,8 @@ Route::prefix('categories')->middleware('auth:admin')->group(function () {
     Route::get('/{primaryCategory}', [CategoryController::class, 'CategoryEdit'])->name('categories.edit');
     // カテゴリーの更新(引数:id)
     Route::put('/{id}', [CategoryController::class, 'CategoryUpDate'])->name('categories.update');
+    // セカンダリーカテゴリの削除
+    Route::post('/categories/delete/{second_id}', [CategoryController::class, 'deleteSecondaryCategory'])->name('categories.deleteSecondary');
     // カテゴリー情報の削除
     Route::delete('/{id}', [CategoryController::class, 'CategoryTrash'])->name('categories.trash');
 });
