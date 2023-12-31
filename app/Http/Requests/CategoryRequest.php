@@ -118,7 +118,7 @@ class CategoryRequest extends FormRequest
             'new_secondary.*.sort_order.min' => '新しいセカンダリーカテゴリーのソート順は整数である必要があります。',
             'new_secondary.*.sort_order.distinct' => '新しいセカンダリーカテゴリーのソート順は一意である必要があります。',
             'new_secondary.*.name.unique_secondary_name' => '指定された新しいセカンダリーカテゴリー名は既に使用されています。',
-            'new_secondary.*.sort_order.unique' => '指入力された新規カテゴリのソート順は既に存在しています。別の値を試してください。',
+            'new_secondary.*.sort_order.unique' => '入力された新規カテゴリのソート順は既に存在しています。別の値を試してください。',
         ];
 
     }

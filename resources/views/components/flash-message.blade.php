@@ -30,6 +30,14 @@ $(function(){
             "positionClass": "toast-top-center",
         }
         toastr.warning("{{ Session::get('delete') }}");
+    // Error
+    @elseif (Session::has('error'))
+        toastr.options =
+        {
+            "closeButton" : true,
+            "positionClass": "toast-top-center",
+        }
+        toastr.warning("{{ Session::get('error') }}");
     @endif
 
     // 店舗情報用message
