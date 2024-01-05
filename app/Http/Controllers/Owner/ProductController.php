@@ -87,7 +87,7 @@ class ProductController extends Controller
 
         // withを用いて、関連するsecondaryも一緒に取得する.
         $categories = PrimaryCategory::with('secondary')
-        ->get();
+        ->orderBy('sort_order')->get();
 
         // owner/products/create.balde.phpに上記変数付で返す
         return \view('owner.products.create',

@@ -18,7 +18,16 @@
                             </div>
                             {{-- カテゴリー情報はあるかの確認 --}}
                             @if (count($primaryCategories) > 0)
-                            <div class="lg:w-2/3 w-full mx-auto overflow-auto">
+                            <div class="lg:w-3/4 w-full mx-auto overflow-auto">
+                                @if ($errors->any())
+                                <div>
+                                    <ul>
+                                        @foreach ($errors->all() as $error)
+                                            <li style="color: red;">{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                                @endif
                                 <table class="table-auto w-full text-left whitespace-no-wrap">
                                     <thead>
                                         <tr>
@@ -27,15 +36,25 @@
                                             <th class="md:px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 rounded-tl rounded-bl">Subcategory数</th>
                                             <th class="md:px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 rounded-tl rounded-bl"></th>
                                             <th class="md:px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 rounded-tl rounded-bl"></th>
+                                            <th class="md:px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 rounded-tl rounded-bl"></th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {{-- 配列でデータベースで取得したものを１つずつ取得 --}}
                                         @foreach ($primaryCategories as $primaryCategory)
+                                        {{-- sortorderの変更 --}}
                                         <tr>
-                                            <td class="md:px-4 py-3">{{ $primaryCategory->sort_order }}</td>
-                                            <td class="md:px-4 py-3">{{ $primaryCategory->name }}</td>
-                                            <td class="md:px-4 py-3">{{ $primaryCategory->secondary_count}}</td>
+                                            <form id="sortOrderupdate_{{ $primaryCategory->id }}" action="{{ route('admin.categories.Primaryorder_update', ['Primary_id' => $primaryCategory->id]) }}" method="POST">
+                                                @csrf
+                                                @method('patch')
+                                                <td class="md:px-4 py-3"><input type="number" id="primary_sort_order" name="primary_sort_order" value="{{ $primaryCategory->sort_order }}"  class="w-full bg-gray-100 rounded border border-gray-300"></td>
+                                                <td class="md:px-4 py-3">{{ $primaryCategory->name }}</td>
+                                                <input type="hidden" id="primary_name" name="primary_name" value="{{ $primaryCategory->name }}" class="w-full bg-gray-100 rounded border border-gray-300" required>
+                                                <td class="md:px-4 py-3">{{ $primaryCategory->secondary_count}}</td>
+                                                <td class="md:px-4 py-3">
+                                                    <button type="button" onclick="sortOrderupdate(this)" data-id="{{ $primaryCategory->id }}" class="text-white bg-lime-500 border-0 py-2 px-4 focus:outline-none hover:bg-lime-400 rounded text-lg">順序変更</button>
+                                                </td>
+                                            </form>
                                             <td class="md:px-4 py-3">
                                                 <button onclick="location.href='{{ route('admin.categories.edit', $primaryCategory) }}'" class="text-white bg-indigo-400 border-0 py-2 px-4 focus:outline-none hover:bg-indigo-500 rounded ">編集</button>
                                             </td>
@@ -53,21 +72,29 @@
                                 </table>
                             </div>
                             @else
-                                <p class="text-center">カテゴリー情報はありません。<br>カテゴリー情報を作成してください。</p>
+                            <p class="text-center">カテゴリー情報はありません。<br>カテゴリー情報を作成してください。</p>
                             @endif
                         </div>
                     </section>
+                    <div class="flex justify-end">
+
                 </div>
             </div>
         </div>
     </div>
-    {{-- 削除確認用アラート --}}
-    <script>
-        function deletePost(e) {
-        'use strict';
-        if (confirm('この情報をゴミ箱へ移します。宜しいですか？')) {
+{{-- 削除確認用アラート --}}
+<script>
+function deletePost(e) {
+    'use strict';
+    if (confirm('この情報をゴミ箱へ移します。宜しいですか？')) {
         document.getElementById('delete_' + e.dataset.id).submit();
-        }
-        }
-    </script>
+    }
+}
+function sortOrderupdate(element) {
+    'use strict';
+    if (confirm('情報を更新しても宜しいですか？')) {
+        document.getElementById('sortOrderupdate_' + element.dataset.id).submit();
+    }
+}
+</script>
 </x-app-layout>
