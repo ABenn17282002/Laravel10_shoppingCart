@@ -70,7 +70,6 @@ Route::middleware('auth:admin')->group(function () {
     // adminプロフィール編集用
     Route::get('/profile', [AdminProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [AdminProfileController::class, 'update'])->name('profile.update');
-
 });
 
 // リソースコントローラ(show画面を除外したルーティング)
@@ -81,6 +80,8 @@ Route::resource('owners', OwnersController::class)
 Route::prefix('categories')->middleware('auth:admin')->group(function () {
     // カテゴリー一覧
     Route::get('/', [CategoryController::class, 'Primaryindex'])->name('categories.index');
+    // プライマリーソートオーダー並び替え
+    Route::patch('/{Primary_id}', [CategoryController::class, 'sortOrderUpdate'])->name('categories.Primaryorder_update');
     // カテゴリー新規作成+登録
     Route::get('/create', [CategoryController::class, 'Categorycreate'])->name('categories.create');
     Route::post('/store', [CategoryController::class, 'CategoryStore'])->name('categories.store');
@@ -90,7 +91,7 @@ Route::prefix('categories')->middleware('auth:admin')->group(function () {
     Route::put('/{id}', [CategoryController::class, 'CategoryUpDate'])->name('categories.update');
     // セカンダリーカテゴリの削除
     Route::post('/categories/delete/{second_id}', [CategoryController::class, 'deleteSecondaryCategory'])->name('categories.deleteSecondary');
-    // カテゴリー情報の削除
+    // プライマリーカテゴリー情報の削除
     Route::delete('/{id}', [CategoryController::class, 'CategoryTrash'])->name('categories.trash');
 });
 

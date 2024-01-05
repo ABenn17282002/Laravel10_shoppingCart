@@ -40,21 +40,13 @@
                                 </div>
                                 @endif
                             {{-- プライマリーカテゴリーの編集 --}}
-                            <label class="text-sm text-gray-600">プライマリーカテゴリー情報</label>
+                            <label class="text-sm text-gray-600 font-semibold">プライマリーカテゴリー名</label>
                             <div class="mb-4 flex">
-                                {{-- Primary Category sort_order --}}
-                                <div class="w-1/6">
-                                    <label for="primary_sort_order" class="text-sm text-gray-600">ソート順</label>
-                                    <input type="number" id="primary_sort_order" name="primary_sort_order" value="{{ $primaryCategory->sort_order }}"  class="w-full bg-gray-100 rounded border border-gray-300" required>
-                                </div>
-                                {{-- Primary Category name --}}
-                                <div class="w-5/6 mr-4">
-                                    <label for="primary_name" class="text-sm text-gray-600">カテゴリー名</label>
-                                    <input type="text" id="primary_name" name="primary_name" value="{{ $primaryCategory->name }}" class="w-full bg-gray-100 rounded border border-gray-300" required>
-                                </div>
+                                <input type="text" id="primary_name" name="primary_name" value="{{ $primaryCategory->name }}" class="w-full bg-gray-100 rounded border border-gray-300" required>
+                                <input type="hidden" id="primary_sort_order" name="primary_sort_order" value="{{ $primaryCategory->sort_order }}"  class="w-full bg-gray-100 rounded border border-gray-300" required>
                             </div>
                             {{-- 既存のセカンダリーカテゴリーの編集 --}}
-                            <label class="text-sm text-gray-600">セカンダリーカテゴリー情報</label>
+                            <label class="text-sm text-gray-600 font-semibold">セカンダリーカテゴリー情報</label>
                             <div class="overflow-x-auto mb-20">
                                 <table class="min-w-full bg-white">
                                     <thead class="bg-gray-800 text-white">
@@ -93,7 +85,7 @@
                                     </tr>
                                 </table>
                             </div>
-                            <div class="flex justify-end">
+                            <div class="flex justify-end space-x-4">
                                 <button type="button" onclick="location.href='{{ route('admin.categories.index')}}'" class="bg-gray-200 border-0 py-2 px-8 focus:outline-none hover:bg-gray-400 rounded text-lg">戻る</button>
                                 <button type="button" onclick="updatePost(this)" data-id="{{ $primaryCategory->id }}" class="text-white bg-lime-500 border-0 py-2 px-8 focus:outline-none hover:bg-lime-400 rounded text-lg">更新する</button>
                             </div>

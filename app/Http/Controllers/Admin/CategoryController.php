@@ -3,20 +3,23 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+// CategoryRequest・Requesetクラスの使用
 use Illuminate\Http\Request;
+use App\Http\Requests\CategoryRequest;
+// Validation・Ruleクラスの使用
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 // 認証モデルの使用
 use Illuminate\Support\Facades\Auth;
-// DBFacadeの使用
-use Illuminate\Support\Facades\DB;
 // Primary・SecondaryCategoryモデルの使用
 use App\Models\PrimaryCategory;
 use App\Models\SecondaryCategory;
-// CategoryRequestの使用
-use App\Http\Requests\CategoryRequest;
-// QueryExceptionクラスの使用
+// QueryException・DBFacadeクラスの使用
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\DB;
+// LOGクラスの使用
 use Illuminate\Support\Facades\Log;
-use Illuminate\Validation\Rule;
+
 
 class CategoryController extends Controller
 {
@@ -32,10 +35,34 @@ class CategoryController extends Controller
     */
     public function Primaryindex()
     {
-        // PrimaryCategoryに紐づくsecondaryCategoryの数を取得
-        $primaryCategories = PrimaryCategory::withCount('secondary')->get();
+        // PrimaryCategoryに紐づくsecondaryCategoryの数を取得+PrimaryOrder順に並び替え
+        $primaryCategories = PrimaryCategory::withCount('secondary')->orderBy('sort_order')->get();
 
         return view('admin.categories.index', compact('primaryCategories'));
+    }
+
+
+    public function sortOrderUpdate(Request $request, $Primary_id)
+    {
+        // バリデーションルールの定義
+        $rules = [
+            'primary_sort_order' => 'required|integer|unique:primary_categories,sort_order,' . $Primary_id,
+        ];
+
+        // バリデータの作成
+        $validator = Validator::make($request->all(), $rules);
+
+        // バリデーションエラーチェック
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        // バリデーションが成功した場合、sort_order を更新
+        $primaryCategory = PrimaryCategory::findOrFail($Primary_id);
+        $primaryCategory->sort_order = $request->input('primary_sort_order');
+        $primaryCategory->save();
+
+        return redirect()->route('admin.categories.index')->with('success', '並び替えが成功しました。');
     }
 
     /**
