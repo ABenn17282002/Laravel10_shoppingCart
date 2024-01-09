@@ -89,28 +89,29 @@
         </div>
     </div>
     <script>
-        function addNewCategory(index) {
-            const newRow = document.createElement('tr');
-            newRow.innerHTML = `
-                <td class="border px-4 py-2">
-                    <input type="number" name="new_secondary[${index}][sort_order]" value="{{ old('new_secondary[${index}][sort_order]') }}" class="w-full bg-gray-100 rounded border border-gray-300 focus:outline-none focus:border-indigo-500 text-base px-3 py-2">
-                </td>
-                <td class="border px-4 py-2">
-                    <input type="text" name="new_secondary[${index}][name]" value="{{ old('new_secondary[${index}][name]') }}" class="w-full bg-gray-100 rounded border border-gray-300 focus:outline-none focus:border-indigo-500 text-base px-3 py-2">
-                </td>
-                <td class="border px-4 py-2 text-center">
-                    <button type="button" class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-3 rounded">削除</button>
-                </td>
-            `;
+let newIndex = 1; // 新しい行のインデックスを初期化
 
-            // フォームに新しい行を追加
-            document.querySelector('#newCategoryRow').parentNode.appendChild(newRow);
+// 新しいカテゴリを追加する関数を定義
+function addNewCategory() {
+    const newRow = document.createElement('tr');
 
-            // 削除ボタンの要素を取得し、クリックイベントリスナーを追加
-            const removeButton = newRow.querySelector('button');
-            removeButton.onclick = function() {
-                newRow.remove();
-            };
-        }
-    </script>
+    newRow.innerHTML = `
+        <td class="border px-4 py-2">
+            <input type="number" name="new_secondary[${newIndex}][sort_order]" class="w-full bg-gray-100 rounded border border-gray-300 focus:outline-none focus:border-indigo-500 text-base px-3 py-2">
+        </td>
+        <td class="border px-4 py-2">
+            <input type="text" name="new_secondary[${newIndex}][name]" class="w-full bg-gray-100 rounded border border-gray-300 focus:outline-none focus:border-indigo-500 text-base px-3 py-2">
+        </td>
+        <td class="border px-4 py-2 text-center">
+            <button type="button" onclick="removeNewCategory(${newIndex})" class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-3 rounded">削除</button>
+        </td>
+    `;
+
+    // フォームに新しい行を追加
+    document.querySelector('tbody').appendChild(newRow);
+
+    newIndex++; // インデックスを増やす
+
+}
+</script>
 </x-app-layout>

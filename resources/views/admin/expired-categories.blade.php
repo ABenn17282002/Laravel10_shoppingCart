@@ -38,12 +38,12 @@
                                     <tbody>
                                         {{-- 配列でデータベースで取得したものを１つずつ取得 --}}
                                         @foreach ($expiredCategories as $primaryCategory)
-                                        <form method="post" action="{{ route('admin.expired-categories.restore', ['category' => $primaryCategory->id ])}}">
-                                            @csrf
-                                            <tr>
+                                        <tr>
+                                            <form method="post" action="{{ route('admin.expired-categories.restore', ['category' => $primaryCategory->id ])}}">
+                                                @csrf
                                                 <td class="md:px-4 py-3"><input type="number" id="sort_order_{{ $primaryCategory->id }}" name="sort_order" value="{{ $primaryCategory->sort_order }}"  class="bg-gray-100 rounded border border-gray-300" required></td>
                                                 <td class="md:px-4 py-3"><input type="text" id="name_{{ $primaryCategory->id }}" name="name" value="{{ $primaryCategory->name }}" class="bg-gray-100 rounded border border-gray-300" required></td>
-                                                <td class="md:px-4 py-3">{{ $primaryCategory->secondary_count}}</td>
+                                                <td class="md:px-4 py-3"><a href="{{ route('admin.expired-categories.show', ['category' => $primaryCategory->id ] ) }}">{{ $primaryCategory->secondary_count}}</a></td>
                                                 <td class="px-4 py-3">
                                                     <button type="submit" class="bg-green-500 hover:bg-green-400 text-white rounded py-2 px-4">復元</button>
                                                 </td>
@@ -56,8 +56,8 @@
                                                 </td>
                                             </form>
                                         </tr>
+                                        @endforeach
                                     </tbody>
-                                    @endforeach
                                 </table>
                             </div>
                             @else

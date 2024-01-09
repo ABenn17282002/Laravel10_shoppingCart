@@ -26,4 +26,5 @@ class PrimaryCategory extends Model
         // SecondaryCategory_tableと1対多の関係
         return $this->hasMany(SecondaryCategory::class);
     }
+
 }
