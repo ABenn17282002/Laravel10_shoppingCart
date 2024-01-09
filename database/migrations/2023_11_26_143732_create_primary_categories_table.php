@@ -33,6 +33,8 @@ return new class extends Migration
             // 第１カテゴリーID(外部制約キー、初期IDなし)
             $table->foreignId('primary_category_id')->constrained();
             $table->timestamps();
+            // 論理削除用テーブルを追加
+            $table->softDeletes();
         });
     }
 

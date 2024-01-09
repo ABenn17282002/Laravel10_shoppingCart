@@ -4,16 +4,21 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+// SoftDelete用クラス
+use Illuminate\Database\Eloquent\SoftDeletes;
+
 
 class SecondaryCategory extends Model
 {
-    use HasFactory;
+    // ソフトデリートを有効化
+    use HasFactory, SoftDeletes;
 
     // SeconadaryCategoryに関するテーブル定義
     protected $fillable = [
         'name',
         'sort_order',
         'primary_category_id',
+        'deleted_at',
     ];
 
     /**

@@ -99,11 +99,12 @@ Route::prefix('categories')->middleware('auth:admin')->group(function () {
 Route::prefix('expired-categories')->
     middleware('auth:admin')->group(function(){
         Route::get('index', [CategoryController::class, 'expiredCatergoryIndex'])->name('expired-categories.index');
+        Route::get('show/{category}', [CategoryController::class, 'ExpiredCategoryShow'])->name('expired-categories.show');
         Route::post('destroy/{category}', [CategoryController::class, 'expiredCatergoryDestroy'])->name('expired-categories.destroy');
         Route::post('restore/{category}', [CategoryController::class, 'restoreCategory'])->name('expired-categories.restore');
 });
 
-// 期限切れOwner一覧表示及び物理削除用ルート
+// 削除済みOwner一覧表示及び物理削除用ルート
 Route::prefix('expired-owners')->
     middleware('auth:admin')->group(function(){
         Route::get('index', [OwnersController::class, 'expiredOwnerIndex'])->name('expired-owners.index');

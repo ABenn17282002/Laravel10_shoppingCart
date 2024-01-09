@@ -208,12 +208,25 @@ class CategoryController extends Controller
         ->with('trash','カテゴリー情報をゴミ箱へ移しました');
     }
 
-    /* Categoryゴミ箱情報の取得 */
+    /* 削除済みCategoryの取得 */
     public function expiredCatergoryIndex()
     {
         // softDeleteのみを取得
         $expiredCategories = PrimaryCategory::onlyTrashed()->withCount('secondary')->get();
         return view('admin.expired-categories',\compact('expiredCategories'));
+    }
+
+    /* Categoryゴミ箱情報詳細 */
+    public function ExpiredCategoryShow($id)
+    {
+        // ルートパラメータの$idを使用してPrimaryCategory モデルからカテゴリーを取得
+        $primaryCategory = PrimaryCategory::onlyTrashed()->findOrFail($id);
+
+        // 削除済みSecondary情報の取得
+        $expiredSecondaryCategories = $primaryCategory->secondary()->orderBy('sort_order')->get();
+
+        // 取得したカテゴリーとセカンダリ情報をビューに渡す
+        return view('admin.expired-categoriesShow', compact('primaryCategory', 'expiredSecondaryCategories'));
     }
 
     /* 削除済みカテゴリー情報の完全削除 */
@@ -227,7 +240,7 @@ class CategoryController extends Controller
         $primaryCategory->forceDelete();
 
         return redirect()->route('admin.expired-categories.index')
-        ->with('delete','カテゴリー情報を完全に削除しました');;
+        ->with('delete','カテゴリー情報を完全に削除しました');
     }
 
     /* 削除済みカテゴリー情報のリストア */
