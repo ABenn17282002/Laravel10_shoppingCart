@@ -1,9 +1,13 @@
 {{-- 取得する画像用の設定 --}}
 @php
+    // モダル用画像の取得
     if($name ==='image1'){$modal ="modal-1" ;}
     if($name ==='image2'){$modal ="modal-2" ;}
     if($name ==='image3'){$modal ="modal-3" ;}
     if($name ==='image4'){$modal ="modal-4" ;}
+    // 新規登録時は値がないため、値の有無を確認
+    $cImage = $currentImage ?? '' ;
+    $cId = $currentId ?? '' ;
 @endphp
 {{-- modal-1 => {{ $modal }} --}}
 <div class="modal micromodal-slide" id="{{ $modal }}" aria-hidden="true">
@@ -38,7 +42,8 @@
     {{-- 開くボタン --}}
     <a class="py-2 px-4 bg-gray-200" data-micromodal-trigger="{{ $modal }}" href='javascript:void(0);'>ファイルを選択</a>
     <div class="w-1/4">
-        <img id="{{ $name }}_thumbnail" src="">
+        {{-- 選択された画像の表示  --}}
+        <img id="{{ $name }}_thumbnail" @if($cImage) src="{{ asset('storage/products/' . $cImage)}}" @else src="" @endif src="">
     </div>
 </div>
-<input id="{{ $name }}_hidden" type="hidden" name="{{ $name }}" value="">
+<input id="{{ $name }}_hidden" type="hidden" name="{{ $name }}" value="{{ $cId }}">

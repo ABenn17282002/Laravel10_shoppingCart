@@ -58,6 +58,21 @@ class Product extends Model
         return $this->belongsTo(Image::class, 'image1', 'id');
     }
 
+    public function imageSecond()
+    {
+        return $this->belongsTo(Image::class, 'image2', 'id');
+    }
+
+    public function imageThird()
+    {
+        return $this->belongsTo(Image::class, 'image3', 'id');
+    }
+
+    public function imageFourth()
+    {
+        return $this->belongsTo(Image::class, 'image4', 'id');
+    }
+
     /**
     * Prouduct(製品)に関わるStoc情報を全て取得
     * 1対多モデル
