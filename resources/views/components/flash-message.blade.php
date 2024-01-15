@@ -40,7 +40,7 @@ $(function(){
         toastr.warning("{{ Session::get('error') }}");
     @endif
 
-    // 店舗情報用message
+    // shop,image,product情報
     @if (Session::has('info'))
         toastr.options =
         {
@@ -48,6 +48,13 @@ $(function(){
             "positionClass": "toast-top-center",
         }
         toastr.info("{{ Session::get('info') }}");
+    @elseif (Session::has('alert'))
+        toastr.options =
+        {
+            "closeButton" : true,
+            "positionClass": "toast-top-center",
+        }
+        toastr.warning("{{ Session::get('alert') }}");
     @endif
 });
 </script>
