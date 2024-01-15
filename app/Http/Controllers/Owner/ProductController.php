@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Owner;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+// productRequestクラスの使用
+use App\Http\Requests\ProductRequest;
 // 認証モデルの使用
 use Illuminate\Support\Facades\Auth;
 // DBFacadeの使用
@@ -97,23 +99,8 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ProductRequest $request)
     {
-        // validation
-        $request->validate([
-            'name' => ['required', 'string', 'max:50'],
-            'information' => ['required', 'string', 'max:1000'],
-            'price' => ['required', 'integer'],
-            'quantity' => ['required', 'integer'],
-            'shop_id' => ['required', 'exists:shops,id'],
-            'category' => ['required', 'exists:secondary_categories,id'],
-            'image1' => ['nullable', 'exists:images,id'],
-            'image2' => ['nullable', 'exists:images,id'],
-            'image3' => ['nullable', 'exists:images,id'],
-            'image4' => ['nullable', 'exists:images,id'],
-            'is_selling' => ['required']
-        ]);
-
         // try catch構文
         try {
             // transaction2回失敗時=> error(引数:$request)
@@ -194,9 +181,30 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(ProductRequest $request, $id)
     {
-        //
+        // validatation
+        $request->validate([
+            'current_quantity' => ['required', 'integer'],
+        ]);
+
+        // productidの取得
+        $product = Product::findOrFail($id);
+        // 製品数量を合計する
+        $quantity = Stock::where('product_id', $product->id)
+        ->sum('quantity');
+
+        // 画面表示上の在庫数と違っている場合
+        if($request->current_quantity !== $quantity){
+            // ルートパラメータの取得
+            $id = $request->route()->parameter('product');
+            // redirect to owner/products/edit.blade.php+ flassmessage
+            return redirect()->route('owner.products.edit', ['product' => $id])
+            ->with('alert','在庫数が変更されています。再度確認してください');
+
+        }else {
+
+        }
     }
 
     /**
