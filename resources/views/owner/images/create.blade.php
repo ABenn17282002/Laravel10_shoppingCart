@@ -11,7 +11,7 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
                     {{-- Error_message --}}
-                    <x-input-error :messages="$errors->get('image')" class="mt-2" />
+                    <x-auth-validation-errors class="mb-4" :errors="$errors" />
                     {{-- 新規画像UPLoad --}}
                     <form method="post" action="{{ route('owner.images.store')}}" enctype="multipart/form-data">
                             @csrf
