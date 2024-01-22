@@ -110,4 +110,5 @@ Route::resource('products', ProductController::class)
 Route::prefix('expired-products')->
     middleware('auth:owners')->group(function(){
         Route::get('index', [ProductController::class, 'productsdestroyIndex'])->name('expired-products.index');
+        Route::post('restore/{id}', [ProductController::class, 'restoreProduct'])->name('expired-products.restore');
 });

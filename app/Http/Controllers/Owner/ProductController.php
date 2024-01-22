@@ -271,7 +271,7 @@ class ProductController extends Controller
         // redirect owner/products/index.blade.php + flashmessage
         return redirect()
         ->route('owner.products.index')
-        ->with('alert','商品をゴミ箱へ移しました');;
+        ->with('alert','商品をゴミ箱へ移しました');
     }
 
     // 商品情報の論理削除
@@ -282,9 +282,21 @@ class ProductController extends Controller
         ->where('shop_id', Auth::user()->shop->id)
         ->with('imageFirst') // 商品に関連する画像を取得
         ->paginate(10);
-        // dd($trashedProducts);
 
         // 商品のゴミ箱ページにリダイレクト
         return view('owner.expired-products', compact('trashedProducts'));
     }
+
+    /* 削除済み商品情報のリストア */
+    public function restoreProduct($id)
+    {
+        // 論理削除された商品を取得して復元する処理
+        $product = Product::onlyTrashed()->findOrFail($id);
+
+        // 商品を復元
+        $product->restore();
+        return redirect()->route('owner.products.index')
+        ->with('info', '商品が復元されました。');
+    }
+
 }

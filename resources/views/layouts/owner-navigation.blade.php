@@ -30,7 +30,7 @@
                         商品管理
                     </x-nav-link>
                     {{-- 削除済み商品情報一覧 --}}
-                    <x-nav-link :href="route('owner.expired-products.index')" :active="request()->routeIs('owner.expired-products.index')">
+                    <x-nav-link :href="route('owner.expired-products.index')" :active="request()->routeIs('owners.expired-products.index')">
                         削除済み商品情報
                     </x-nav-link>
                 </div>
@@ -103,7 +103,7 @@
                 商品管理
             </x-responsive-nav-link>
             {{-- 削除済み商品情報一覧 --}}
-            <x-responsive-nav-link :href="route('owner.expired-products.index')" :active="request()->routeIs('owner.expired-products.index')">
+            <x-responsive-nav-link :href="route('owner.expired-products.index')" :active="request()->routeIs('owners.expired-products.index')">
                 削除済み商品情報
             </x-responsive-nav-link>
         </div>
