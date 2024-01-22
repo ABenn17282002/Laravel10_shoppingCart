@@ -105,3 +105,9 @@ Route::resource('images', ImageController::class)
 // ProductControllerのルート情報
 Route::resource('products', ProductController::class)
 ->middleware('auth:owners')->except(['show']);
+
+// 削除済み商品
+Route::prefix('expired-products')->
+    middleware('auth:owners')->group(function(){
+        Route::get('index', [ProductController::class, 'productsdestroyIndex'])->name('expired-products.index');
+});

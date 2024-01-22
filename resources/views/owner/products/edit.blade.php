@@ -130,13 +130,23 @@
                                     </div>
                                 </div>
                                 <div class="p-2 w-full flex justify-around mt-4">
+                                    <div class="p-2 w-1/2 flex justify-around mt-4">
                                         {{-- 戻る --}}
                                         <button type="button" onclick="location.href='{{ route('owner.products.index')}}'" class="bg-gray-200 border-0 py-2 px-8 focus:outline-none hover:bg-gray-400 rounded text-lg">戻る</button>
                                         {{-- 更新ボタン --}}
                                         <button type="submit" class="text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">更新する</button>
+                                    </div>
+                                    <div class="p-2 w-1/2 flex justify-around mt-4">
+                                        <a href="#" data-id="{{ $product->id }}" onclick="deletePost(this)" class="text-white bg-red-400 border-0 py-2 px-4 focus:outline-none hover:bg-red-500 rounded ">削除する</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                    </form>
+                    {{-- 削除用フォーム --}}
+                    <form id="delete_{{$product->id}}" method="post" action="{{ route('owner.products.destroy', ['product' => $product->id ] )}}">
+                        @csrf
+                        @method('delete')
                     </form>
                 </div>
             </div>
@@ -150,7 +160,7 @@
         images.forEach(image => {
             // clickしたら発火
             image.addEventListener('click',function(e){
-            /*-- Image_IDの取得--　*/
+            /*-- Image_IDの取得--*/
             //data-idの6文字の取得
             const imageName = e.target.dataset.id.substr(0, 6);
             // 6文字カット
@@ -166,5 +176,13 @@
             document.getElementById(imageName + '_hidden').value = imageId;
     }, )
     })
+        // 削除確認(image用から引用)
+        function deletePost(e) {
+            'use strict';
+            if (confirm('本当に削除してもいいですか?')) {
+            document.getElementById('delete_' + e.dataset.id).submit();
+            }
+        }
+
     </script>
 </x-app-layout>

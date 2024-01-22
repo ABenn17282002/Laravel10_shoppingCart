@@ -265,6 +265,26 @@ class ProductController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        // 論理削除
+        Product::findOrFail($id)->delete();
+
+        // redirect owner/products/index.blade.php + flashmessage
+        return redirect()
+        ->route('owner.products.index')
+        ->with('alert','商品をゴミ箱へ移しました');;
+    }
+
+    // 商品情報の論理削除
+    public function productsdestroyIndex()
+    {
+        // ゴミ箱に移動した商品と関連する画像を取得
+        $trashedProducts = Product::onlyTrashed()
+        ->where('shop_id', Auth::user()->shop->id)
+        ->with('imageFirst') // 商品に関連する画像を取得
+        ->paginate(10);
+        // dd($trashedProducts);
+
+        // 商品のゴミ箱ページにリダイレクト
+        return view('owner.expired-products', compact('trashedProducts'));
     }
 }

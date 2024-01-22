@@ -41,6 +41,8 @@ return new class extends Migration
             ->nullable()
             ->constrained('images');
             $table->timestamps();
+            // 論理削除用テーブルを追加
+            $table->softDeletes();
         });
     }
 

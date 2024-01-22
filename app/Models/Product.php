@@ -10,10 +10,13 @@ use App\Models\Shop;
 use App\Models\SecondaryCategory;
 // stockモデルの使用
 use App\Models\Stock;
+// SoftDelete用クラス
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Product extends Model
 {
-    use HasFactory;
+    // ソフトデリートを有効化
+    use HasFactory, SoftDeletes;
 
     // Products_tableの定義
     protected $fillable = [
@@ -28,6 +31,7 @@ class Product extends Model
         'image2',
         'image3',
         'image4',
+        'deleted_at',
     ];
 
     /**
@@ -74,7 +78,7 @@ class Product extends Model
     }
 
     /**
-    * Prouduct(製品)に関わるStoc情報を全て取得
+    * Prouduct(製品)に関わるStock情報を全て取得
     * 1対多モデル
     */
     public function stock()
