@@ -35,9 +35,11 @@
                                             <td class="md:px-4 py-3">
                                                 @if ($product->imageFirst)
                                                 <img src="{{ asset('storage/products/' . $product->imageFirst->filename) }}" alt="商品画像" width="100">
+                                                @else
+                                                <img src="{{ asset('images/no_image.jpg')}}" width="100">
                                                 @endif
                                             </td>
-                                            <form method="post" action="">
+                                            <form method="post" action="{{ route('owner.expired-products.restore', ['id' => $product->id ]) }}">
                                                 @csrf
                                                 <td class="px-4 py-3">
                                                     <button type="submit" class="bg-green-500 hover:bg-green-400 text-white rounded py-2 px-4">復元</button>

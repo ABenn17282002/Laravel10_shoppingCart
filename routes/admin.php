@@ -95,7 +95,7 @@ Route::prefix('categories')->middleware('auth:admin')->group(function () {
     Route::delete('/{id}', [CategoryController::class, 'CategoryTrash'])->name('categories.trash');
 });
 
-// 削除済みカテゴリー情報
+// 削除済みカテゴリー情報（一覧+削除+復元）
 Route::prefix('expired-categories')->
     middleware('auth:admin')->group(function(){
         Route::get('index', [CategoryController::class, 'expiredCatergoryIndex'])->name('expired-categories.index');
