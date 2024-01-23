@@ -287,14 +287,28 @@ class ProductController extends Controller
         return view('owner.expired-products', compact('trashedProducts'));
     }
 
+    /* 削除済商品情報の完全削除 */
+    public function expiredProductDestroy($id)
+    {
+        // 論理削除された商品を取得して復元する処理
+        $product = Product::onlyTrashed()->findOrFail($id);
+        // 商品情報を物理的に削除
+        $product->forceDelete();
+
+        // 商品一覧画面へリダイレクトする
+        return redirect()->route('owner.products.index')
+        ->with('delete','商品情報を完全に削除しました');
+    }
+
     /* 削除済み商品情報のリストア */
     public function restoreProduct($id)
     {
         // 論理削除された商品を取得して復元する処理
         $product = Product::onlyTrashed()->findOrFail($id);
-
         // 商品を復元
         $product->restore();
+
+        // 商品一覧画面へリダイレクトする
         return redirect()->route('owner.products.index')
         ->with('info', '商品が復元されました。');
     }

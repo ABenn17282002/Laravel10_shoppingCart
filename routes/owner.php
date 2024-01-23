@@ -106,9 +106,10 @@ Route::resource('images', ImageController::class)
 Route::resource('products', ProductController::class)
 ->middleware('auth:owners')->except(['show']);
 
-// 削除済み商品
+// 削除済み商品(一覧+復元＋完全削除)
 Route::prefix('expired-products')->
     middleware('auth:owners')->group(function(){
         Route::get('index', [ProductController::class, 'productsdestroyIndex'])->name('expired-products.index');
         Route::post('restore/{id}', [ProductController::class, 'restoreProduct'])->name('expired-products.restore');
+        Route::post('destroy/{id}', [ProductController::class, 'expiredProductDestroy'])->name('expired-products.destroy');
 });

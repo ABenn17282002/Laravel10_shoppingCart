@@ -45,11 +45,11 @@
                                                     <button type="submit" class="bg-green-500 hover:bg-green-400 text-white rounded py-2 px-4">復元</button>
                                                 </td>
                                             </form>
-                                            <form id="" method="post" action="">
+                                            <form id="delete_{{ $product->id }}" method="post" action="{{ route('owner.expired-products.destroy', ['id' => $product->id ]) }}">
                                                 @csrf
                                                 {{-- 削除メソッド --}}
                                                 <td class="md:px-4 py-3">
-                                                    <a href="#" data-id="" onclick="deletePost(this)" class="text-white bg-red-400 border-0 py-2 px-4 focus:outline-none hover:bg-red-500 rounded ">削除</a>
+                                                    <a href="#" data-id="{{ $product->id }}" onclick="deletePost(this)" class="text-white bg-red-400 border-0 py-2 px-4 focus:outline-none hover:bg-red-500 rounded ">削除</a>
                                                 </td>
                                             </form>
                                         </tr>
@@ -66,4 +66,13 @@
             </div>
         </div>
     </div>
+{{-- 削除確認用アラート --}}
+<script>
+    function deletePost(e) {
+    'use strict';
+    if (confirm('商品データを完全削除しますか?')) {
+    document.getElementById('delete_' + e.dataset.id).submit();
+    }
+    }
+</script>
 </x-app-layout>
