@@ -6,6 +6,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Component\ComponentTestController;
 // ServiceContainer表示用クラス追加
 use App\Http\Controllers\LifeCycleTestController;
+use GuzzleHttp\Middleware;
+// ItemController表示用クラスの追加
+use App\Http\Controllers\User\ItemController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,13 +21,10 @@ use App\Http\Controllers\LifeCycleTestController;
 |
 */
 
-Route::get('/', function () {
-    return view('user.welcome');
+// 商品一覧ページ用ルート
+Route::middleware('auth:users')->group(function(){
+    Route::get('/', [ItemController::class, 'index'])->name('items.index');
 });
-
-Route::get('/dashboard', function () {
-    return view('user.dashboard');
-})->middleware(['auth:users', 'verified'])->name('dashboard');
 
 // ComponentTespage表示
 Route::get('/component-test1',[ComponentTestController::class, 'showComponent1']);
