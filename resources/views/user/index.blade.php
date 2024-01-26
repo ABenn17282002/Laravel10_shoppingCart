@@ -13,9 +13,15 @@
                         @foreach($products as $product)
                             <div class="w-1/4 p-2 md:p-4">
                                     <a href="">
-                                        <div class="border rounded-md p-2 md:p-4">
-                                            <x-thumbnail filename="{{ $product->filename ?? ''}}" type="products" />
-                                            <div class="text-gray-700">{{ $product->name }}</div>
+                                        <x-thumbnail filename="{{ $product->imageFirst->filename ?? ''}}" type="products" />
+                                        {{-- 引用元:https://tailblocks.cc/ [Ecommerce] --}}
+                                        <div class="mt-4">
+                                            {{-- カテゴリー名 --}}
+                                            <h3 class="text-gray-500 text-xs tracking-widest title-font mb-1">{{ $product->category->name }}</h3>
+                                            {{-- 製品名 --}}
+                                            <h2 class="text-gray-900 title-font text-lg font-medium">{{ $product->name }}</h2>
+                                            {{-- 価格 --}}
+                                            <p class="mt-1">{{ $product->price }}</p>
                                         </div>
                                     </a>
                                 </div>
@@ -25,4 +31,6 @@
             </div>
         </div>
     </div>
+    {{-- ページネーション --}}
+    {{ $products->links() }}
 </x-app-layout>

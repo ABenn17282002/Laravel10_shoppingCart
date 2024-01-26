@@ -12,8 +12,8 @@ class ItemController extends Controller
     // indexページの表示
     public function index()
     {
-        // ProductTableの内容を全取得
-        $products = Product::all();
+        // ProductTableの内容を20件ごとに取得
+        $products = Product::paginate(20);
         return view('user.index',\compact('products'));
     }
 }
