@@ -48,7 +48,10 @@ class ItemController extends Controller
         ,'products.sort_order as sort_order'
         ,'products.information', 'secondary_categories.name as category'
         ,'image1.filename as filename')->paginate(10);
+        
+        // セッションからユーザー名を取得
+        $username = session('username'); 
 
-        return view('user.index',\compact('products'));
+        return view('user.index', compact('products', 'username'));
     }
 }
