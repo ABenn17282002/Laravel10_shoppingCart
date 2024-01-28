@@ -19,7 +19,7 @@
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     {{--  dashboad→user.items.index --}}
                     <x-nav-link :href="route('user.items.index')" :active="request()->routeIs('user.items.index')">
-                        {{ __('ホーム') }}
+                        {{ __('商品一覧') }}
                     </x-nav-link>
                 </div>
             </div>
