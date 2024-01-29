@@ -11,19 +11,17 @@ use Illuminate\Support\Facades\DB;
 
 class ItemController extends Controller
 {
-    // indexページの表示
-    public function index()
+    // 処理の共通化(商品取得処理)
+    private function getAvailableProductsQuery()
     {
-        /* Stockの合計をグループ化->数量が1以上 */
+        // Stockの合計をグループ化->数量が1以上
         $stocks = DB::table('t_stocks')
-        // select `product_id`, sum(quantity) as quantity from `t_stocks` 
         ->select('product_id', DB::raw('sum(quantity) as quantity'))
-        // group by `product_id` 
         ->groupBy('product_id')
-        // having `quantity` > ?
         ->having('quantity', '>', 1);
 
-        $products = DB::table('products')
+        // ベースのクエリを作成
+        return DB::table('products')
         ->joinSub($stocks, 'stock', function($join){
             // Join product on products.id = stock.product_id
             $join->on('products.id', '=', 'stock.product_id');
@@ -47,11 +45,28 @@ class ItemController extends Controller
         ->select('products.id as id', 'products.name as name', 'products.price'
         ,'products.sort_order as sort_order'
         ,'products.information', 'secondary_categories.name as category'
-        ,'image1.filename as filename')->paginate(10);
-        
-        // セッションからユーザー名を取得
-        $username = session('username'); 
+        ,'image1.filename as filename');
+    }
 
-        return view('user.index', compact('products', 'username'));
+    // indexページの表示
+    public function index()
+    {
+        $products = $this->getAvailableProductsQuery()->paginate(10);
+        return view('user.index', compact('products'));
+    }
+
+    // Login時ページの商品一覧
+    public function memberIndex()
+    {
+        $products = $this->getAvailableProductsQuery()->paginate(10);
+        return view('user.index', compact('products')); 
+    }
+
+    // 商品詳細ページ
+    public function show($id)
+    {
+        // 製品IDがあれば情報取得,ない場合Not Found
+        $product = Product::findorFail($id);
+        return \view('user.show',\compact('product'));
     }
 }
