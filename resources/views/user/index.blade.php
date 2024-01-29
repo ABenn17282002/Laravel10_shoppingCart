@@ -6,7 +6,7 @@
                 <div class="sm:absolute sm:top-0 sm:right-0 p-6 text-right z-10">
                     @auth('users')
                     @else
-                        <a href="{{ route('user.login') }}" class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">ログイン</a>
+                        <a href="{{ route('user.items.memberIndex')  }}" class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">ログイン</a>
                         @if (Route::has('user.register'))
                             <a href="{{ route('user.register') }}" class="ml-4 font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">会員登録</a>
                         @endif
@@ -26,7 +26,11 @@
                     <div class="flex flex-wrap">
                         @foreach($products as $product)
                             <div class="w-1/4 p-2 md:p-4">
-                                    <a href="">
+                                @if (Auth::guard('users')->check())
+                                    <a href="{{ route('user.items.membershow', ['item' => $product->id]) }}">
+                                @else
+                                    <a href="{{ route('user.items.show', ['item' => $product->id]) }}">
+                                @endif
                                         <x-thumbnail filename="{{ $product->filename ?? ''}}" type="products" />
                                         {{-- 引用元:https://tailblocks.cc/ [Ecommerce] --}}
                                         <div class="mt-4">

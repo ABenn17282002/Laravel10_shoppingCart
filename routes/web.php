@@ -9,8 +9,6 @@ use App\Http\Controllers\LifeCycleTestController;
 use GuzzleHttp\Middleware;
 // ItemControllerクラスの追加
 use App\Http\Controllers\User\ItemController;
-// SaveUsernameToSessionクラスの追加
-use App\Http\Middleware\SaveUsernameToSession;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,13 +22,14 @@ use App\Http\Middleware\SaveUsernameToSession;
 */
 
 // 商品一覧+詳細ページ
-Route::middleware([SaveUsernameToSession::class])->group(function () {
-    Route::get('/', [ItemController::class, 'index'])->name('items.index');
-});
+Route::get('/', [ItemController::class, 'index'])->name('items.index');
+Route::get('show/{item}', [ItemController::class, 'show'])->name('items.show');
 
-// Route::middleware('auth:users')->group(function(){
-//     Route::get('/', [ItemController::class, 'index'])->name('items.index');
-// });
+// USERLOGIN時の挙動
+Route::middleware('auth:users')->group(function(){
+    Route::get('/member', [ItemController::class, 'memberIndex'])->name('items.memberIndex');
+    Route::get('/member/show/{item}', [ItemController::class, 'show'])->name('items.membershow');
+});
 
 // ComponentTespage表示
 Route::get('/component-test1',[ComponentTestController::class, 'showComponent1']);
