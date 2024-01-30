@@ -11,6 +11,15 @@ export default defineConfig({
             refresh: true,
         }),
     ],
+    build: {
+        // SwiperライブラリのJavaScriptファイルをエントリーポイントとして指定
+        rollupOptions: {
+            input: {
+                main: './resources/js/main.js', // 既存のエントリーポイントを指定
+                swiper: './node_modules/swiper/swiper-bundle.js', // Swiper のパスを指定
+            },
+        },
+    },
     // ロゴ表示崩れ対策
     server: {
         hmr: {
