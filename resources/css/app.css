@@ -1,5 +1,7 @@
 /* CSSは上記に追記 Vue3.0~ */
 @import 'micromodal';
+/* swiper.js用CSS */
+@import 'swiper';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
