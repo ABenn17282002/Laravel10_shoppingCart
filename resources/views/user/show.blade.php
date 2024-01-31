@@ -84,12 +84,46 @@
                                 {{-- カートに入れる --}}
                                 <button class="flex ml-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded">カートに入れる</button>
                             </div>
-                            <div class="flex justify-end py-2 ">
+                            <div class="flex justify-end py-2">
                             <button onclick="goBack()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">戻る</button>
                             </div>
                         </div>
                     </div>
                 </div>
+                {{-- 店舗情報の表示 --}}
+                <div class="border-t border-gray-400 my-8"></div>
+                <div class="mb-4 text-center">この商品を販売しているショップ</div>
+                {{-- 店舗名 --}}
+                <div class="mb-4 text-center">{{ $product->shop->name}}</div>
+                {{-- 店舗画像の表示 --}}
+                <div class="mb-4 text-center">
+                @if ($product->shop->filename !== null)
+                    <img class="mx-auto w-40 h-40 object-cover rounded-full" src="{{ asset('storage/shops/' . $product->shop->filename )}}">
+                @else
+                        <img src="">
+                @endif
+                </div>
+                <div class="mb-4 text-center">
+                    <button data-micromodal-trigger="modal-1" href='javascript:;' type="button" class="text-white bg-gray-400 border-0 py-2 px-6 focus:outline-none hover:bg-gray-500 rounded">ショップの詳細を見る</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{-- modal-window --}}
+    <div class="modal micromodal-slide " id="modal-1" aria-hidden="true">
+        {{-- 重ね順の調整 --}}
+        <div class="z-10 modal__overlay" tabindex="-1" data-micromodal-close>
+            <div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="modal-1-title">
+                <header class="modal__header">
+                        <h2 class="text-xl text-gray-700" id="modal-1-title">{{ $product->shop->name }}</h2>
+                        <button class="modal__close" aria-label="Close modal" data-micromodal-close></button>
+                </header>
+                <main class="modal__content" id="modal-1-content">
+                    <p>{{ $product->shop->information }}</p>
+                </main>
+                <footer class="modal__footer">
+                    <button class="modal__btn" data-micromodal-close aria-label="Close this dialog window">閉じる</button>
+                </footer>
             </div>
         </div>
     </div>
@@ -98,5 +132,5 @@
     function goBack() {
         window.history.back();
     }
-    </script>
+</script>
 </x-app-layout>

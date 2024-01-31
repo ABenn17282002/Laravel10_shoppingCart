@@ -19,35 +19,35 @@ class ShopSeeder extends Seeder
                 'owner_id' => 1,
                 'name' => 'グリーンビューティーサロン',
                 'information' => 'フェイシャルトリートメント、マッサージ、ネイルケアを提供しています。',
-                'filename' => '',
+                'filename' => 'shop1.jpg',
                 'is_selling' => true
             ],
             [
                 'owner_id' => 2,
-                'name' => 'サンシャインフィットネスセンター',
-                'information' => 'ジム、ヨガクラス、パーソナルトレーニングを受けられます。',
-                'filename' => '',
+                'name' => 'HomeDecorHaven',
+                'information' => 'スタイリッシュなホームデコレーションアイテムをご覧ください。',
+                'filename' => 'shop2.jpg',
                 'is_selling' => true
             ],
             [
                 'owner_id' => 3,
                 'name' => 'フルーツフレッシュジュースバー',
                 'information' => '新鮮なフルーツジュース、スムージー、サラダを提供しています。',
-                'filename' => '',
+                'filename' => 'shop3.jpg',
                 'is_selling' => true
             ],
             [
                 'owner_id' => 4,
                 'name' => 'ブルームブティック',
                 'information' => 'ファッションアパレル、アクセサリー、バッグを販売しています。',
-                'filename' => '',
+                'filename' => 'shop4.jpg',
                 'is_selling' => true
             ],
             [
                 'owner_id' => 5,
-                'name' => 'シルバースクリーンシネマ',
-                'information' => '最新映画の上映、ポップコーン、飲み物を提供しています.',
-                'filename' => '',
+                'name' => 'OutdoorAdventureGear',
+                'information' => 'アウトドアアクティビティ向けの装備とアクセサリーを提供しています。',
+                'filename' => 'shop5.jpg',
                 'is_selling' => true
             ],
         ]);
