@@ -4,14 +4,16 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+// SoftDelete用クラス
+use Illuminate\Database\Eloquent\SoftDeletes;
 // shopモデルの追加
 use App\Models\Shop;
 // SecondaryCategoryモデルの追加
 use App\Models\SecondaryCategory;
 // stockモデルの使用
 use App\Models\Stock;
-// SoftDelete用クラス
-use Illuminate\Database\Eloquent\SoftDeletes;
+//  Userモデルの使用
+use App\Models\User;
 
 class Product extends Model
 {
@@ -84,5 +86,15 @@ class Product extends Model
     public function stock()
     {
         return $this->hasMany(Stock::class);
+    }
+
+    /**
+    * Prouduct(製品)に関わるcarts情報を全て取得
+    * 1対多モデル
+    */
+    public function users()
+    {
+        return $this->belongsToMany(User::class,'carts')
+        ->withPivot(['id', 'quantity']);
     }
 }
