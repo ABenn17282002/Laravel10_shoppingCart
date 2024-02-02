@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 // Productクラスの使用
 use App\Models\Product;
+// Stockクラスの使用
+use App\Models\Stock;
 // DB Facades使用
 use Illuminate\Support\Facades\DB;
 
@@ -31,7 +33,7 @@ class ItemController extends Controller
         // inner join `secondary_categories` on `products`.`secondary_category_id` = `secondary_categories`.`id`
         ->join('secondary_categories', 'products.secondary_category_id', '=',
         'secondary_categories.id')
-        // inner join `images` as `image*` on `products`.`image*` = `image*`.`id` 
+        // inner join `images` as `image*` on `products`.`image*` = `image*`.`id`
         ->join('images as image1', 'products.image1', '=', 'image1.id')
         ->join('images as image2', 'products.image2', '=', 'image2.id')
         ->join('images as image3', 'products.image3', '=', 'image3.id')
@@ -59,7 +61,7 @@ class ItemController extends Controller
     public function memberIndex()
     {
         $products = $this->getAvailableProductsQuery()->paginate(10);
-        return view('user.index', compact('products')); 
+        return view('user.index', compact('products'));
     }
 
     // 商品詳細ページ
@@ -67,6 +69,15 @@ class ItemController extends Controller
     {
         // 製品IDがあれば情報取得,ない場合Not Found
         $product = Product::findorFail($id);
-        return \view('user.show',\compact('product'));
+        // 在庫数量の取得
+        $quantity = Stock::where('product_id', $product->id)
+        ->sum('quantity');
+
+        // 数量の最大値を10に設定
+        if($quantity > 10){
+            $quantity =10;
+        }
+
+        return \view('user.show',\compact('product','quantity'));
     }
 }
