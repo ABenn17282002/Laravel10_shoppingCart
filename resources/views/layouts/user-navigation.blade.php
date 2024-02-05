@@ -17,9 +17,13 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    {{--  dashboad→user.items.index --}}
+                    {{--  商品一覧 --}}
                     <x-nav-link :href="route('user.items.index')" :active="request()->routeIs('user.items.index')">
                         {{ __('商品一覧') }}
+                    </x-nav-link>
+                    {{-- cart用リンク --}}
+                    <x-nav-link :href="route('user.cart.index')" :active="request()->routeIs('user.cart.index')">
+                        {{ __('カート情報') }}
                     </x-nav-link>
                 </div>
             </div>
@@ -77,6 +81,14 @@
             {{-- user用に編集 --}}
             <x-responsive-nav-link :href="route('user.items.index')" :active="request()->routeIs('user.items.index')">
                 {{ __('ホーム') }}
+            </x-responsive-nav-link>
+            {{-- 商品一覧 --}}
+            <x-responsive-nav-link :href="route('user.items.index')" :active="request()->routeIs('user.items.index')">
+                {{ __('商品一覧') }}
+            </x-responsive-nav-link>
+            {{-- cart用リンク --}}
+            <x-responsive-nav-link :href="route('user.cart.index')" :active="request()->routeIs('user.cart.index')">
+                {{ __('カート情報') }}
             </x-responsive-nav-link>
         </div>
 
