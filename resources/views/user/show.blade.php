@@ -1,3 +1,7 @@
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/css/bootstrap.css" rel="stylesheet">
+</head>
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
@@ -129,7 +133,8 @@
     </div>
 @vite(['resources/js/swiper.js'])
 <!-- jQueryを読み込み -->
-@vite(['resources/js/jquery-3.7.1.min.js'])
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 <script>
     // 商品一覧ページへ戻る
     function goBack() {
@@ -153,12 +158,29 @@
                 },
                 success: function(response) {
                     // カートにアイテムが追加された場合の処理
-                    // 例えば、アイコンの表示を更新したり、成功メッセージを表示したりできます
-                    console.log('成功:', response);
+                    toastr.options = {
+                        "closeButton": true,
+                        "positionClass": "toast-top-center",
+                        "timeOut": 3000
+                    };
+                    toastr.success('カートにアイテムが追加されました');
+
+                    // カート一覧画面にリダイレクト
+                    window.location.href = '/cart';
+
                 },
                 error: function(response) {
                     // エラー処理
-                    console.log('エラー:', response);
+                    toastr.options = {
+                        "closeButton": true,
+                        "positionClass": "toast-top-center",
+                        "timeOut": 3000
+                    };
+                    toastr.error('アイテムの追加に失敗しました');
+
+                    // 商品詳細画面にリダイレクト
+                    window.location.href = '/member/show/{item}';
+
                 }
             });
         @else

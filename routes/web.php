@@ -33,6 +33,8 @@ Route::middleware('auth:users')->group(function(){
     Route::get('/member/show/{item}', [ItemController::class, 'show'])->name('items.membershow');
     /* Cart用ルート設定 */
     Route::prefix('cart')->group(function(){
+        // cart情報表示
+        Route::get('/', [CartController::class, 'index'])->name('cart.index');
         // Cart追加
         Route::post('add', [CartController::class, 'add'])->name('cart.add');
     });
