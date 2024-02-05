@@ -9,6 +9,8 @@ use App\Http\Controllers\LifeCycleTestController;
 use GuzzleHttp\Middleware;
 // ItemControllerクラスの追加
 use App\Http\Controllers\User\ItemController;
+// CartControllerクラスの追加
+use App\Http\Controllers\User\CartController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,7 +31,14 @@ Route::get('show/{item}', [ItemController::class, 'show'])->name('items.show');
 Route::middleware('auth:users')->group(function(){
     Route::get('/member', [ItemController::class, 'memberIndex'])->name('items.memberIndex');
     Route::get('/member/show/{item}', [ItemController::class, 'show'])->name('items.membershow');
+    /* Cart用ルート設定 */
+    Route::prefix('cart')->group(function(){
+        // Cart追加
+        Route::post('add', [CartController::class, 'add'])->name('cart.add');
+    });
 });
+
+
 
 // ComponentTespage表示
 Route::get('/component-test1',[ComponentTestController::class, 'showComponent1']);

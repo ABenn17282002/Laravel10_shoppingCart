@@ -82,7 +82,7 @@
                                     </div>
                                 </div>
                                 {{-- カートに入れる --}}
-                                <button class="flex ml-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded">カートに入れる</button>
+                                <button onclick="addToCart({{ $product->id }})" class="flex ml-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded">カートに入れる</button>
                             </div>
                             <div class="flex justify-end py-2">
                             <button onclick="goBack()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">戻る</button>
@@ -128,9 +128,43 @@
         </div>
     </div>
 @vite(['resources/js/swiper.js'])
+<!-- jQueryを読み込み -->
+@vite(['resources/js/jquery-3.7.1.min.js'])
 <script>
+    // 商品一覧ページへ戻る
     function goBack() {
         window.history.back();
+    }
+
+    // カートへ追加する機能
+    function addToCart(productId) {
+        // ログインしているかどうかを確認
+        @auth
+            // ログインしている場合、カートに商品を追加するAjaxリクエストを送信
+            $.ajax({
+                url: '/cart/add', // カートに商品を追加するルートを指定
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                data: {
+                    productId: productId,
+                    quantity: $('select[name="quantity"]').val() // 選択された数量を取得
+                },
+                success: function(response) {
+                    // カートにアイテムが追加された場合の処理
+                    // 例えば、アイコンの表示を更新したり、成功メッセージを表示したりできます
+                    console.log('成功:', response);
+                },
+                error: function(response) {
+                    // エラー処理
+                    console.log('エラー:', response);
+                }
+            });
+        @else
+            // ログインしていない場合、ログインページにリダイレクト
+            window.location.href = '/login'; // ログインページのURLを指定
+        @endauth
     }
 </script>
 </x-app-layout>
