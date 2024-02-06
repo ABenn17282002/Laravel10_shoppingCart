@@ -55,4 +55,17 @@ class CartController extends Controller
         // これらの値を含むJSONレスポンスを返す
         return response()->json(['itemInCart' => $itemInCart]);
     }
+
+    // Cartの削除
+    public function delete($id)
+    {
+        // Cart内の選択したproduct_idを削除
+        Cart::where('product_id',$id)
+        ->where('user_id',Auth::id())
+        ->delete();
+
+        // cart/indexにリダイレクト
+        return redirect()->route('user.cart.index')
+        ->with('alert','カート情報を削除しました');;
+    }
 }
