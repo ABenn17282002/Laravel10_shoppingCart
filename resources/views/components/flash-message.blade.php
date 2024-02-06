@@ -40,7 +40,7 @@ $(function(){
         toastr.warning("{{ Session::get('error') }}");
     @endif
 
-    // shop,image,product情報
+    // shop,image,product,cart情報
     @if (Session::has('info'))
         toastr.options =
         {
